@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Name>FatQuantsDjango</Name>
+    <RootNamespace>FatQuantsDjango</RootNamespace>
+    <InterpreterId>MSBuild|.python36_virtualenv|$(MSBuildProjectFullPath)</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>3a18ce64-2626-4b9b-83fb-3ecfa169d1d0</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>manage.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <WebBrowserUrl>http://localhost</WebBrowserUrl>
+    <LaunchProvider>Django launcher</LaunchProvider>
+    <DjangoSettingsModule>FatQuantsDjango.settings</DjangoSettingsModule>
+    <OutputPath>.</OutputPath>
+    <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="app\forms.py" />
+    <Compile Include="app\models.py" />
+    <Compile Include="app\tests.py" />
+    <Compile Include="app\views.py" />
+    <Compile Include="app\__init__.py" />
+    <Compile Include="app\migrations\__init__.py" />
+    <Compile Include="json_data\admin.py" />
+    <Compile Include="json_data\apps.py" />
+    <Compile Include="json_data\customsql.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="json_data\migrations\__init__.py" />
+    <Compile Include="json_data\models.py" />
+    <Compile Include="json_data\tests.py" />
+    <Compile Include="json_data\views.py" />
+    <Compile Include="json_data\__init__.py" />
+    <Compile Include="manage.py" />
+    <Compile Include="FatQuantsDjango\__init__.py" />
+    <Compile Include="FatQuantsDjango\settings.py" />
+    <Compile Include="FatQuantsDjango\urls.py" />
+    <Compile Include="FatQuantsDjango\wsgi.py" />
+    <Compile Include="process\admin.py" />
+    <Compile Include="process\apps.py" />
+    <Compile Include="process\customsql.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="process\migrations\__init__.py" />
+    <Compile Include="process\models.py" />
+    <Compile Include="process\tests.py" />
+    <Compile Include="process\views.py" />
+    <Compile Include="process\__init__.py" />
+    <Compile Include="reference_data\admin.py" />
+    <Compile Include="reference_data\apps.py" />
+    <Compile Include="reference_data\customsql.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="reference_data\migrations\__init__.py" />
+    <Compile Include="reference_data\models.py" />
+    <Compile Include="reference_data\tests.py" />
+    <Compile Include="reference_data\views.py" />
+    <Compile Include="reference_data\__init__.py" />
+    <Compile Include="system\admin.py" />
+    <Compile Include="system\apps.py" />
+    <Compile Include="system\customsql.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="system\migrations\__init__.py" />
+    <Compile Include="system\models.py" />
+    <Compile Include="system\tests.py" />
+    <Compile Include="system\views.py" />
+    <Compile Include="system\__init__.py" />
+    <Compile Include="ticker\admin.py" />
+    <Compile Include="ticker\apps.py" />
+    <Compile Include="ticker\customsql.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ticker\migrations\__init__.py" />
+    <Compile Include="ticker\models.py" />
+    <Compile Include="ticker\tests.py" />
+    <Compile Include="ticker\views.py" />
+    <Compile Include="ticker\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\" />
+    <Folder Include="app\migrations\" />
+    <Folder Include="app\static\" />
+    <Folder Include="app\static\app\" />
+    <Folder Include="app\static\app\content\" />
+    <Folder Include="app\static\app\fonts\" />
+    <Folder Include="app\static\app\scripts\" />
+    <Folder Include="app\templates\" />
+    <Folder Include="app\templates\app\" />
+    <Folder Include="FatQuantsDjango\" />
+    <Folder Include="json_data\" />
+    <Folder Include="json_data\migrations\" />
+    <Folder Include="json_data\templates\" />
+    <Folder Include="process\" />
+    <Folder Include="process\migrations\" />
+    <Folder Include="process\templates\" />
+    <Folder Include="reference_data\" />
+    <Folder Include="reference_data\migrations\" />
+    <Folder Include="reference_data\templates\" />
+    <Folder Include="system\" />
+    <Folder Include="system\migrations\" />
+    <Folder Include="system\templates\" />
+    <Folder Include="ticker\" />
+    <Folder Include="ticker\migrations\" />
+    <Folder Include="ticker\templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="json_data\templates\index.html" />
+    <Content Include="process\templates\index.html" />
+    <Content Include="reference_data\templates\index.html" />
+    <Content Include="requirements.txt" />
+    <Content Include="db.sqlite3" />
+    <Content Include="app\static\app\content\bootstrap.css" />
+    <Content Include="app\static\app\content\bootstrap.min.css" />
+    <Content Include="app\static\app\content\site.css" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="app\static\app\scripts\bootstrap.js" />
+    <Content Include="app\static\app\scripts\bootstrap.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.map" />
+    <Content Include="app\static\app\scripts\jquery.validate-vsdoc.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.min.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="app\static\app\scripts\modernizr-2.6.2.js" />
+    <Content Include="app\static\app\scripts\respond.js" />
+    <Content Include="app\static\app\scripts\respond.min.js" />
+    <Content Include="app\static\app\scripts\_references.js" />
+    <Content Include="app\templates\app\about.html" />
+    <Content Include="app\templates\app\contact.html" />
+    <Content Include="app\templates\app\index.html" />
+    <Content Include="app\templates\app\layout.html" />
+    <Content Include="app\templates\app\login.html" />
+    <Content Include="app\templates\app\loginpartial.html" />
+    <Content Include="system\templates\index.html" />
+    <Content Include="ticker\templates\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="readme.html">
+      <SubType>WebBrowser</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="..\..\..\..\.python36_virtualenv\">
+      <Id>.python36_virtualenv</Id>
+      <Version>3.6</Version>
+      <Description>.python36_virtualenv (Python 3.6 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
