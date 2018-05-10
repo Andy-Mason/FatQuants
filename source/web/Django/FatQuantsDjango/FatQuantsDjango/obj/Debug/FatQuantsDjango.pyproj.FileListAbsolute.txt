@@ -1,0 +1,1 @@
+C:\Users\andy\Projects\FatQuants\source\web\Django\FatQuantsDjango\FatQuantsDjango\obj\Debug\FatQuantsDjango.pyproj.CoreCompileInputs.cache
