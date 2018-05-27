@@ -62,16 +62,6 @@
     <Compile Include="FatQuantsDjango\settings.py" />
     <Compile Include="FatQuantsDjango\urls.py" />
     <Compile Include="FatQuantsDjango\wsgi.py" />
-    <Compile Include="process\admin.py" />
-    <Compile Include="process\apps.py" />
-    <Compile Include="process\customsql.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="process\migrations\__init__.py" />
-    <Compile Include="process\models.py" />
-    <Compile Include="process\tests.py" />
-    <Compile Include="process\views.py" />
-    <Compile Include="process\__init__.py" />
     <Compile Include="reference_data\admin.py" />
     <Compile Include="reference_data\apps.py" />
     <Compile Include="reference_data\customsql.py">
@@ -120,9 +110,6 @@
     <Folder Include="json_data\" />
     <Folder Include="json_data\migrations\" />
     <Folder Include="json_data\templates\" />
-    <Folder Include="process\" />
-    <Folder Include="process\migrations\" />
-    <Folder Include="process\templates\" />
     <Folder Include="reference_data\" />
     <Folder Include="reference_data\migrations\" />
     <Folder Include="reference_data\templates\" />
@@ -136,7 +123,6 @@
   <ItemGroup>
     <Content Include="batch_process\templates\index.html" />
     <Content Include="json_data\templates\index.html" />
-    <Content Include="process\templates\index.html" />
     <Content Include="reference_data\templates\index.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
