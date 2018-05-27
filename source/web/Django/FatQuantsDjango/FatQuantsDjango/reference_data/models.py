@@ -124,7 +124,8 @@ class MarketIndex(models.Model):
         models.CharField(verbose_name='Notes',
                          db_column='notes',
                          max_length=250,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
 
     class Meta:

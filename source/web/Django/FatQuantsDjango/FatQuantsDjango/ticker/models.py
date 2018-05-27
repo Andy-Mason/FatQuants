@@ -62,14 +62,16 @@ class Ticker(models.Model):
         models.CharField(verbose_name='Instrument Type',
                          db_column='instrument_type',
                          max_length=30,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     instrument_subtype = \
         models.CharField(verbose_name='Instrument Subtype',
                          db_column='instrument_subtype',
                          max_length=30,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     instrument_leverage = \
@@ -92,21 +94,24 @@ class Ticker(models.Model):
                          db_column='unit_type',
                          max_length=3,
                          choices=FUND_UNIT__TYPES,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     issuer_name = \
         models.CharField(verbose_name='Issuer Name',
                          db_column='issuer_name',
                          max_length=100,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
 
     security_name = \
         models.CharField(verbose_name='Security Name',
                          db_column='security_name',
                          max_length=100,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     registered_country_code = \
@@ -149,7 +154,8 @@ class Ticker(models.Model):
         models.CharField(verbose_name='Listing Type',
                          db_column='listing_type',
                          max_length=20,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     listing_date = \
@@ -162,7 +168,8 @@ class Ticker(models.Model):
         models.CharField(verbose_name='Listing Category',
                          db_column='listing_category',
                          max_length=60,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     exchange_market_size = \
@@ -175,35 +182,40 @@ class Ticker(models.Model):
         models.CharField(verbose_name='Trading Service',
                          db_column='trading_service',
                          max_length=60,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     market_segment_code = \
         models.CharField(verbose_name='Market Segment Code',
                          db_column='market_segment_code',
                          max_length=20,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     market_sector = \
         models.CharField(verbose_name='Market Sector',
                          db_column='market_sector',
                          max_length=60,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     market_subsector = \
         models.CharField(verbose_name='Market Subsector',
                          db_column='market_subsector',
                          max_length=60,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     morningstar_category = \
         models.CharField(verbose_name='Morningstar Category',
                          db_column='morningstar_category',
                          max_length=100,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
     
     issue_date = \
@@ -222,7 +234,8 @@ class Ticker(models.Model):
         models.CharField(verbose_name='Coupon Type',
                          db_column='coupon_type',
                          max_length=20,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
 
     coupon_value = \
@@ -235,7 +248,8 @@ class Ticker(models.Model):
         models.CharField(verbose_name='Coupon Period',
                          db_column='coupon_period',
                          max_length=20,
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
                          
     class Meta:
@@ -456,24 +470,21 @@ class TickerEodDataAuditRecord(models.Model):
     #-------------------------------------------------------------------------
     # AUDIT_ACTION_TYPES
     #-------------------------------------------------------------------------
-    AUDIT_ACTION_NONE   = '-'
-    AUDIT_ACTION_INSERT = 'I'
-    AUDIT_ACTION_UPDATE = 'U'
-    AUDIT_ACTION_DELETE = 'D'
+    AUDIT_ACTION_INSERT = '1'
+    AUDIT_ACTION_UPDATE = '0'
+    AUDIT_ACTION_DELETE = '-1'
     AUDIT_ACTION__TYPES = ( 
-        (AUDIT_ACTION_NONE,   'None'), 
         (AUDIT_ACTION_INSERT, 'Insert'),
         (AUDIT_ACTION_UPDATE, 'Update'),
         (AUDIT_ACTION_DELETE, 'Delete')
     )
     audit_action = \
-        models.CharField(verbose_name='Audit Action',
-                         db_column='audit_action',
-                         choices=AUDIT_ACTION__TYPES,
-                         max_length=1,
-                         default=AUDIT_ACTION_NONE,
-                         null=False,
-                         blank=False)
+        models.SmallIntegerField(verbose_name='Audit Action',
+                                 db_column='audit_action',
+                                 choices=AUDIT_ACTION__TYPES,
+                                 default=AUDIT_ACTION_UPDATE,
+                                 null=False,
+                                 blank=False)
     
     audit_timestamp = \
         models.DateTimeField(verbose_name='Audit Timestamp',

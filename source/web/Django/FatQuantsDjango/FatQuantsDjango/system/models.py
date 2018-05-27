@@ -16,24 +16,21 @@ class SystemAuditRecord(models.Model):
     #-------------------------------------------------------------------------
     # AUDIT_ACTION_TYPES
     #-------------------------------------------------------------------------
-    AUDIT_ACTION_NONE   = '-'
-    AUDIT_ACTION_INSERT = 'I'
-    AUDIT_ACTION_UPDATE = 'U'
-    AUDIT_ACTION_DELETE = 'D'
+    AUDIT_ACTION_INSERT = '1'
+    AUDIT_ACTION_UPDATE = '0'
+    AUDIT_ACTION_DELETE = '-1'
     AUDIT_ACTION__TYPES = ( 
-        (AUDIT_ACTION_NONE,   'None'), 
         (AUDIT_ACTION_INSERT, 'Insert'),
         (AUDIT_ACTION_UPDATE, 'Update'),
         (AUDIT_ACTION_DELETE, 'Delete')
     )
     audit_action = \
-        models.CharField(verbose_name='Audit Action',
-                         db_column='audit_action',
-                         choices=AUDIT_ACTION__TYPES,
-                         max_length=1,
-                         default=AUDIT_ACTION_NONE,
-                         null=False,
-                         blank=False)
+        models.SmallIntegerField(verbose_name='Audit Action',
+                                 db_column='audit_action',
+                                 choices=AUDIT_ACTION__TYPES,
+                                 default=AUDIT_ACTION_UPDATE,
+                                 null=False,
+                                 blank=False)
 
     audit_timestamp = \
         models.DateTimeField(verbose_name='Audit Timestamp',
@@ -179,7 +176,8 @@ class SystemDataType(models.Model):
         models.CharField(verbose_name='Notes',
                          db_column='notes',
                          max_length=250, 
-                         null=True,
+                         default='',
+                         null=False,
                          blank=True)
 
     class Meta:

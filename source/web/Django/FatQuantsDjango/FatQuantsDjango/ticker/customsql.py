@@ -63,10 +63,10 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
                 -- -----------------------------------------------------------
                 -- Audit Action
                 -- -----------------------------------------------------------
-                audit_action        varchar := NULL;
-                audit_action_insert varchar := 'I';
-                audit_action_update varchar := 'U';
-                audit_action_delete varchar := 'D';
+                audit_action        smallint := NULL;
+                audit_action_insert smallint := 1;
+                audit_action_update smallint := 0;
+                audit_action_delete smallint := -1;
 
                 -- -----------------------------------------------------------
                 -- Data field variables

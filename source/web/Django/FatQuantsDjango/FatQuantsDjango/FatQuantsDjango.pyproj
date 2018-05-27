@@ -37,6 +37,16 @@
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
     <Compile Include="app\migrations\__init__.py" />
+    <Compile Include="batch_process\admin.py" />
+    <Compile Include="batch_process\apps.py" />
+    <Compile Include="batch_process\customsql.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="batch_process\migrations\__init__.py" />
+    <Compile Include="batch_process\models.py" />
+    <Compile Include="batch_process\tests.py" />
+    <Compile Include="batch_process\views.py" />
+    <Compile Include="batch_process\__init__.py" />
     <Compile Include="json_data\admin.py" />
     <Compile Include="json_data\apps.py" />
     <Compile Include="json_data\customsql.py">
@@ -103,6 +113,9 @@
     <Folder Include="app\static\app\scripts\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\app\" />
+    <Folder Include="batch_process\" />
+    <Folder Include="batch_process\migrations\" />
+    <Folder Include="batch_process\templates\" />
     <Folder Include="FatQuantsDjango\" />
     <Folder Include="json_data\" />
     <Folder Include="json_data\migrations\" />
@@ -121,6 +134,7 @@
     <Folder Include="ticker\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="batch_process\templates\index.html" />
     <Content Include="json_data\templates\index.html" />
     <Content Include="process\templates\index.html" />
     <Content Include="reference_data\templates\index.html" />
