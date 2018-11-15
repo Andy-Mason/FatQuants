@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>FatQuantsDjango</Name>
     <RootNamespace>FatQuantsDjango</RootNamespace>
-    <InterpreterId>MSBuild|.python36_virtualenv|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|.python37_virtualenv|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -124,7 +124,6 @@
     <Content Include="batch_process\templates\index.html" />
     <Content Include="json_data\templates\index.html" />
     <Content Include="reference_data\templates\index.html" />
-    <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />
     <Content Include="app\static\app\content\bootstrap.min.css" />
@@ -163,10 +162,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Interpreter Include="..\..\..\..\.python36_virtualenv\">
-      <Id>.python36_virtualenv</Id>
-      <Version>3.6</Version>
-      <Description>.python36_virtualenv (Python 3.6 (64-bit))</Description>
+    <Interpreter Include="..\..\..\..\.python37_virtualenv\">
+      <Id>.python37_virtualenv</Id>
+      <Version>0.0</Version>
+      <Description>.python37_virtualenv (Python 3.7 (64-bit))</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>
       <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
