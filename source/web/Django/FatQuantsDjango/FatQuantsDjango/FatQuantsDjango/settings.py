@@ -33,15 +33,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # Default app created by framework
-    'app',
+    #'app',
 
     # Add your apps here to enable them
-    'batch_process',
-    'json_data',
-    #'process',
-    'reference_data',
-    'system',
-    'ticker',
+    #'batch_process',
+    #'json_data',
+    #'reference_data',
+    #'system',
+    #'ticker',
 
     # Django bits
     'django.contrib.admin',
@@ -116,7 +115,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'fatquants',
         'USER': 'fatqowner',
-        'PASSWORD': 'Fat4521Owner',
+        'PASSWORD': 'Fatq4521Owner',
         'HOST': 'localhost',
         'PORT': '5432',
     }
