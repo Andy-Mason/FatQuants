@@ -8,16 +8,23 @@ from django.contrib.postgres.fields import JSONField
 #-----------------------------------------------------------------------------
 class Country(models.Model):
 
+    country_id = \
+        models.BigAutoField(verbose_name='CountryID',
+                            db_column='country_id',
+                            primary_key=True)
+
     country_code = \
         models.CharField(verbose_name='CountryCode',
                          db_column='country_code',
                          max_length=2,
-                         primary_key=True)
+                         unique=True,
+                         null=False,
+                         blank=False)
 
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=100, 
+                         max_length=250, 
                          unique=True,
                          null=False,
                          blank=False)
@@ -34,34 +41,42 @@ class Country(models.Model):
 #-----------------------------------------------------------------------------
 class Currency(models.Model):
 
+    currency_id = \
+        models.BigAutoField(verbose_name='CurrencyID',
+                            db_column='currency_id',
+                            primary_key=True)
+
     currency_code = \
         models.CharField(verbose_name='Ccy',
                          db_column='currency_code',
                          max_length=3,
-                         primary_key=True)
+                         unique=True,
+                         null=False,
+                         blank=False)
 
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=100,
+                         max_length=250,
                          unique=True,
                          null=False,
                          blank=False)
     
-    base_currency_units = \
-        models.FloatField(verbose_name='BaseCcy Units',
-                          db_column='base_currency_units',
-                          null=True,
-                          blank=True)
-    
     base_currency_code = \
         models.ForeignKey('self',
+                          to_field='currency_code',
                           on_delete=models.PROTECT,
                           verbose_name='BaseCcy',
                           db_column='base_currency_code',
                           null=True,
                           blank=True)
-
+    
+    base_currency_units = \
+        models.FloatField(verbose_name='BaseCcy Units',
+                          db_column='base_currency_units',
+                          null=True,
+                          blank=True)    
+    
     class Meta:
         db_table = 'refdata_currency'
 
@@ -74,20 +89,28 @@ class Currency(models.Model):
 #-----------------------------------------------------------------------------
 class IdentifierType(models.Model):
 
-    identifier_type = \
-        models.CharField(verbose_name='Identifier Type',
-                         db_column='identifier_type',
-                         max_length=20,
-                         primary_key=True)
+    identifier_type_id = \
+        models.BigAutoField(verbose_name='IdentifierTypeID',
+                            db_column='identifier_type_id',
+                            primary_key=True)
 
-    description = \
-        models.CharField(verbose_name='Description',
-                         db_column='description',
-                         max_length=100, 
+    identifier_type = \
+        models.CharField(verbose_name='IdentifierType',
+                         db_column='identifier_type',
+                         max_length=30,
                          unique=True,
                          null=False,
                          blank=False)
-
+    
+    description = \
+        models.CharField(verbose_name='Description',
+                         db_column='description',
+                         max_length=250, 
+                         unique=True,
+                         default='',
+                         null=False,
+                         blank=False)
+    
     class Meta:
         db_table = 'refdata_identifier_type'
 
@@ -101,33 +124,33 @@ class IdentifierType(models.Model):
 class MarketIndex(models.Model):
 
     market_index_id = \
-        models.AutoField(verbose_name='MarketIndexID',
-                         db_column='market_index_id',
-                         primary_key=True)
+        models.BigAutoField(verbose_name='MarketIndexID',
+                            db_column='market_index_id',
+                            primary_key=True)
 
     market_index = \
-        models.CharField(verbose_name='Market Index',
+        models.CharField(verbose_name='MarketIndex',
                          db_column='market_index',
                          max_length=100,
                          unique=True,
                          default='',
                          null=False,
                          blank=False)
-
-    order_by = \
-        models.IntegerField(verbose_name='Order By',
-                            db_column='order_by',
-                            null=True,
-                            blank=True)
     
-    notes = \
-        models.CharField(verbose_name='Notes',
-                         db_column='notes',
+    description = \
+        models.CharField(verbose_name='Description',
+                         db_column='description',
                          max_length=250,
                          default='',
                          null=False,
                          blank=True)
-
+    
+    order_by = \
+        models.BigIntegerField(verbose_name='Order By',
+                               db_column='order_by',
+                               null=True,
+                               blank=True)
+    
     class Meta:
         db_table = 'refdata_market_index'
 
@@ -141,14 +164,14 @@ class MarketIndex(models.Model):
 class ResourceType(models.Model):
 
     resource_type = \
-        models.IntegerField(verbose_name='ResourceType',
-                            db_column='resource_type',
-                            primary_key=True)
+        models.BigIntegerField(verbose_name='ResourceType',
+                               db_column='resource_type',
+                               primary_key=True)
     
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=100, 
+                         max_length=250, 
                          unique=True,
                          default='',
                          null=False,
@@ -166,24 +189,24 @@ class ResourceType(models.Model):
 #-----------------------------------------------------------------------------
 class TestData(models.Model):
 
-    test_identifier = \
-        models.CharField(verbose_name='Test Identifier',
-                         db_column='test_identifier',
-                         max_length=63,
-                         primary_key=True)
-
+    test_identifier_id = \
+        models.BigAutoField(verbose_name='TestIdentifierID',
+                            db_column='test_identifier_id',
+                            primary_key=True)
+    
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=100, 
+                         max_length=250, 
                          unique=True,
+                         default='',
                          null=False,
                          blank=False)
 
     notes = \
         models.CharField(verbose_name='Notes',
                          db_column='notes',
-                         max_length=250,
+                         max_length=1000,
                          null=True,
                          blank=True)
     
@@ -220,8 +243,8 @@ class TestData(models.Model):
     test_decimal = \
         models.DecimalField(verbose_name='Decimal',
                             db_column='test_decimal',
-                            max_digits=40,
-                            decimal_places=20,
+                            max_digits=1000,
+                            decimal_places=500,
                             null=True,
                             blank=True)
     
@@ -278,7 +301,7 @@ class TestData(models.Model):
                            db_column='test_blob',
                            null=True,
                            blank=True)
-
+    
     class Meta:
         db_table = 'refdata_test'
 
@@ -291,20 +314,28 @@ class TestData(models.Model):
 #-----------------------------------------------------------------------------
 class TradingExchange(models.Model):
 
-    trading_exchange = \
-        models.CharField(verbose_name='Trading Exchange',
-                         db_column='trading_exchange',
-                         max_length=20,
-                         primary_key=True)
+    trading_exchange_id = \
+        models.BigAutoField(verbose_name='TradingExchangeID',
+                            db_column='trading_exchange_id',
+                            primary_key=True)
 
-    description = \
-        models.CharField(verbose_name='Description',
-                         db_column='description',
-                         max_length=100, 
+    trading_exchange = \
+        models.CharField(verbose_name='TradingExchange',
+                         db_column='trading_exchange',
+                         max_length=30,
                          unique=True,
                          null=False,
                          blank=False)
-
+    
+    description = \
+        models.CharField(verbose_name='Description',
+                         db_column='description',
+                         max_length=250, 
+                         unique=True,
+                         default='',
+                         null=False,
+                         blank=False)
+    
     class Meta:
         db_table = 'refdata_trading_exchange'
 
