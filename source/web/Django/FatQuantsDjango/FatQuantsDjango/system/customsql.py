@@ -34,7 +34,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                 -- -----------------------------------------------------------
                 primary_key_field        varchar := NULL;
                 primary_key_field_name   varchar := NULL;
-                primary_key_field_value  text    := NULL;
+                primary_key_field_value  int8    := NULL;
 
                 -- -----------------------------------------------------------
                 -- System Data Types
@@ -87,6 +87,9 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                 -- field. No primary key or more than one is not allowed.
                 -- An exception is raised if this rule is breached.
                 --
+                -- Furthermore, the primary key must be of integer type that
+                -- can be cast to an int8 type.
+                --
                 -- We cannot use the information_schema to get the 
                 -- primary key field. The constraint_column_usage view
                 -- returns no rows if the user is not the dbowner.
@@ -132,16 +135,16 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                     END IF;
 
                     -- -------------------------------------------------------
-                    -- Set primary key data 
+                    -- Set the primary key data 
                     -- -------------------------------------------------------
                     primary_key_field_name := primary_key_field;
                     IF TG_OP = 'INSERT' THEN
                         EXECUTE
-                          'SELECT ($1).' || primary_key_field_name || '::text'
+                          'SELECT ($1).' || primary_key_field_name || '::int8'
                           USING NEW INTO primary_key_field_value;
                     ELSE
                         EXECUTE
-                          'SELECT ($1).' || primary_key_field_name || '::text'
+                          'SELECT ($1).' || primary_key_field_name || '::int8'
                           USING OLD INTO primary_key_field_value;
                     END IF;
 

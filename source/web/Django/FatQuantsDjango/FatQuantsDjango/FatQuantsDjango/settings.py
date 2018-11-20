@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     #'batch_process',
     #'json_data',
     #'reference_data',
-    #'system',
+    'system',
     #'ticker',
 
     # Django bits

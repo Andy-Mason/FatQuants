@@ -16,9 +16,9 @@ class SystemAuditRecord(models.Model):
     #-------------------------------------------------------------------------
     # AUDIT_ACTION_TYPES
     #-------------------------------------------------------------------------
-    AUDIT_ACTION_INSERT = '1'
-    AUDIT_ACTION_UPDATE = '0'
-    AUDIT_ACTION_DELETE = '-1'
+    AUDIT_ACTION_INSERT = 1
+    AUDIT_ACTION_UPDATE = 0
+    AUDIT_ACTION_DELETE = -1
     AUDIT_ACTION__TYPES = ( 
         (AUDIT_ACTION_INSERT, 'Insert'),
         (AUDIT_ACTION_UPDATE, 'Update'),
@@ -56,11 +56,11 @@ class SystemAuditRecord(models.Model):
                          blank=False)
     
     primary_key_field_value = \
-        models.TextField(verbose_name='Primary Key Value',
-                         db_column='primary_key_field_value',
-                         default='',
-                         null=False,
-                         blank=False)
+        models.BigIntegerField(verbose_name='Primary Key Value',
+                               db_column='primary_key_field_value',
+                               default=0,
+                               null=False,
+                               blank=False)
     
     field_name = \
         models.CharField(verbose_name='Field Name',
@@ -100,8 +100,8 @@ class SystemAuditRecord(models.Model):
     field_value_decimal = \
         models.DecimalField(verbose_name='Decimal',
                             db_column='field_value_decimal',
-                            max_digits=100,
-                            decimal_places=50,
+                            max_digits=1000,
+                            decimal_places=500,
                             null=True,
                             blank=True)
     
@@ -166,7 +166,7 @@ class SystemDataType(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=100, 
+                         max_length=250, 
                          unique=True,
                          default='',
                          null=False,
@@ -175,7 +175,7 @@ class SystemDataType(models.Model):
     notes = \
         models.CharField(verbose_name='Notes',
                          db_column='notes',
-                         max_length=250, 
+                         max_length=1000, 
                          default='',
                          null=False,
                          blank=True)

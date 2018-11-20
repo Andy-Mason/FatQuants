@@ -470,9 +470,9 @@ class TickerEodDataAuditRecord(models.Model):
     #-------------------------------------------------------------------------
     # AUDIT_ACTION_TYPES
     #-------------------------------------------------------------------------
-    AUDIT_ACTION_INSERT = '1'
-    AUDIT_ACTION_UPDATE = '0'
-    AUDIT_ACTION_DELETE = '-1'
+    AUDIT_ACTION_INSERT = 1
+    AUDIT_ACTION_UPDATE = 0
+    AUDIT_ACTION_DELETE = -1
     AUDIT_ACTION__TYPES = ( 
         (AUDIT_ACTION_INSERT, 'Insert'),
         (AUDIT_ACTION_UPDATE, 'Update'),
