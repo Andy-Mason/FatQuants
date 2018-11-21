@@ -310,6 +310,43 @@ class TestData(models.Model):
 
 
 #-----------------------------------------------------------------------------
+# TextTranslation
+#-----------------------------------------------------------------------------
+class TextTranslation(models.Model):
+
+    text_translation_id = \
+        models.BigAutoField(verbose_name='TextTranslationID',
+                            db_column='text_translation_id',
+                            primary_key=True)
+
+    text_context = \
+        models.CharField(verbose_name='TextContext',
+                         db_column='text_context',
+                         max_length=100,
+                         null=False,
+                         blank=False)
+    
+    text_lookup = \
+        models.TextField(verbose_name='TextLookup',
+                         db_column='text_lookup',
+                         null=False,
+                         blank=False)
+    
+    text_translation = \
+        models.TextField(verbose_name='TextTranslation',
+                         db_column='text_translation',
+                         null=False,
+                         blank=True)
+    
+    class Meta:
+        db_table = 'refdata_text_translation'
+        unique_together = ('text_context', 'text_lookup')
+
+    def __str__(self):
+        return self.name
+
+
+#-----------------------------------------------------------------------------
 # TradingExchange
 #-----------------------------------------------------------------------------
 class TradingExchange(models.Model):
