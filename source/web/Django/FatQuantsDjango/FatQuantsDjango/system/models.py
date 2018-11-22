@@ -12,7 +12,7 @@ class SystemAuditRecord(models.Model):
         models.BigAutoField(verbose_name='AuditID',
                             db_column='audit_id',
                             primary_key=True)
-
+    
     #-------------------------------------------------------------------------
     # AUDIT_ACTION_TYPES
     #-------------------------------------------------------------------------
@@ -97,11 +97,17 @@ class SystemAuditRecord(models.Model):
                           null=True,
                           blank=True)
     
+    #-------------------------------------------------------------------------
+    # Decimal (Numeric) data type
+    #-------------------------------------------------------------------------
+    # Django limits : max_digits=1000, decimal_places=500
+    # ODBC limits   : max_digits=254,  decimal_places=127
+    #-------------------------------------------------------------------------
     field_value_decimal = \
         models.DecimalField(verbose_name='Decimal',
                             db_column='field_value_decimal',
-                            max_digits=1000,
-                            decimal_places=500,
+                            max_digits=254,
+                            decimal_places=127,
                             null=True,
                             blank=True)
     
