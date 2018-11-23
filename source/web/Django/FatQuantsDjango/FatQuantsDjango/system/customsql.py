@@ -71,6 +71,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                 -- ### TODO: Will old_value/new_value text work with bytea data?
                 -- -----------------------------------------------------------
                 table_field      record;
+                field_datatype   smallint;
                 field_value_old  text;
                 field_value_new  text;
 
@@ -84,8 +85,8 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                 -- -----------------------------------------------------------
                 -- IMPLEMENTATION NOTE:
                 -- In this application we must have exactly one primary key
-                -- field. No primary key or more than one is not allowed.
-                -- An exception is raised if this rule is breached.
+                -- field. No primary key or a composite primary key is not
+                -- allowed. An exception is raised if this rule is breached.
                 --
                 -- Furthermore, the primary key must be of integer type that
                 -- can be cast to an int8 type.
@@ -179,11 +180,11 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                 FOR table_field IN
 	            SELECT
                    information_schema.columns.column_name, 
-                   information_schema.columns.udt_name,
-                   system_data_type_mapping.system_data_type
+                   information_schema.columns.udt_name
+                   -- system_data_type_mapping.system_data_type  ### REMOVE WHEN TESTING COMPLETED
 	            FROM information_schema.columns
-                LEFT JOIN public.system_data_type_mapping
-                  ON information_schema.columns.udt_name = system_data_type_mapping.database_data_type
+                -- LEFT JOIN public.system_data_type_mapping  ### REMOVE WHEN TESTING COMPLETED
+                  -- ON information_schema.columns.udt_name = system_data_type_mapping.database_data_type  ### REMOVE WHEN TESTING COMPLETED
 	            WHERE table_schema = quote_ident(TG_TABLE_SCHEMA)
 	              AND table_name = quote_ident(TG_TABLE_NAME)
 	            ORDER BY information_schema.columns.ordinal_position
@@ -192,10 +193,91 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                     -- -------------------------------------------------------
                     -- Check for missing system_data_type_mapping entry
                     -- -------------------------------------------------------
+                    /* ### REMOVE WHEN TESTING COMPLETED
                     IF (table_field.system_data_type IS NULL) THEN
                         RAISE EXCEPTION 'No entry for: ''%'' in system_data_type_mapping table.', table_field.udt_name
                         USING HINT = '(System Configuration Error)';
                     END IF;
+                    */
+
+                    -- -------------------------------------------------------
+                    -- Set the field datatype
+                    -- -------------------------------------------------------
+                    field_datatype := NULL;
+
+                    IF table_field.udt_name = 'bool' THEN
+                        field_datatype := datatype_boolean;
+                    END IF;
+
+                    IF table_field.udt_name = 'int2' THEN
+                        field_datatype := datatype_integer;
+                    END IF;
+
+                    IF table_field.udt_name = 'int4' THEN
+                        field_datatype := datatype_integer;
+                    END IF;
+
+                    IF table_field.udt_name = 'int8' THEN
+                        field_datatype := datatype_integer;
+                    END IF;
+
+                    IF table_field.udt_name = 'float8' THEN
+                        field_datatype := datatype_float;
+                    END IF;
+
+                    IF table_field.udt_name = 'numeric' THEN
+                        field_datatype := datatype_decimal;
+                    END IF;
+
+                    IF table_field.udt_name = 'date' THEN
+                        field_datatype := datatype_date;
+                    END IF;
+
+                    IF table_field.udt_name = 'time' THEN
+                        field_datatype := datatype_time;
+                    END IF;
+
+                    IF table_field.udt_name = 'timestamptz' THEN
+                        field_datatype := datatype_datetime;
+                    END IF;
+
+                    IF table_field.udt_name = 'interval' THEN
+                        field_datatype := datatype_duration;
+                    END IF;
+
+                    IF table_field.udt_name = 'inet' THEN
+                        field_datatype := datatype_text;
+                    END IF;
+
+                    IF table_field.udt_name = 'text' THEN
+                        field_datatype := datatype_text;
+                    END IF;
+
+                    IF table_field.udt_name = 'uuid' THEN
+                        field_datatype := datatype_text;
+                    END IF;
+
+                    IF table_field.udt_name = 'varchar' THEN
+                        field_datatype := datatype_text;
+                    END IF;
+
+                    IF table_field.udt_name = 'jsonb' THEN
+                        field_datatype := datatype_json;
+                    END IF;
+
+                    IF table_field.udt_name = 'bytea' THEN
+                        field_datatype := datatype_blob;
+                    END IF;
+
+
+                    -- -------------------------------------------------------
+                    -- Check for missing udt_name => field_datatype mapping
+                    -- -------------------------------------------------------
+                    IF (field_datatype IS NULL) THEN
+                        RAISE EXCEPTION 'No field datatype mapping for: ''%'' in system_audit_record_insert().', table_field.udt_name
+                        USING HINT = '(Unmapped table_field.udt_name)';
+                    END IF;
+
 
                     -- -------------------------------------------------------
                     -- Set the audit action

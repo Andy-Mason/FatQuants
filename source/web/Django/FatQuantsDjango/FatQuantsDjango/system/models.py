@@ -70,14 +70,42 @@ class SystemAuditRecord(models.Model):
                          null=False,
                          blank=False)
     
+    #-------------------------------------------------------------------------
+    # FIELD_DATA_TYPES
+    #-------------------------------------------------------------------------
+    DATATYPE_NONE     = 0
+    DATATYPE_BOOLEAN  = 1
+    DATATYPE_INTEGER  = 2
+    DATATYPE_FLOAT    = 3
+    DATATYPE_DECIMAL  = 4
+    DATATYPE_DATE     = 5
+    DATATYPE_TIME     = 6
+    DATATYPE_DATETIME = 7
+    DATATYPE_DURATION = 8
+    DATATYPE_TEXT     = 9
+    DATATYPE_JSON     = 10
+    DATATYPE_BLOB     = 11
+    FIELD_DATA_TYPES = (
+        (DATATYPE_NONE,     'None'),
+        (DATATYPE_BOOLEAN,  'Boolean'),
+        (DATATYPE_INTEGER,  'Integer'),
+        (DATATYPE_FLOAT,    'Float'),
+        (DATATYPE_DECIMAL,  'Decimal'),
+        (DATATYPE_DATE,     'Date'),
+        (DATATYPE_TIME,     'Time'),
+        (DATATYPE_DATETIME, 'DateTime'),
+        (DATATYPE_DURATION, 'Duration'),
+        (DATATYPE_TEXT,     'Text'),
+        (DATATYPE_JSON,     'JSON'),
+        (DATATYPE_BLOB,     'BLOB')
+    )
     field_data_type = \
-        models.ForeignKey('SystemDataType',
-                          on_delete=models.PROTECT,
-                          verbose_name='Field DataType',
-                          db_column='field_data_type',
-                          default=0,
-                          null=False,
-                          blank=False)
+        models.SmallIntegerField(verbose_name='Field DataType',
+                                 db_column='field_data_type',
+                                 choices=FIELD_DATA_TYPES,
+                                 default=DATATYPE_NONE,
+                                 null=False,
+                                 blank=False)
     
     field_value_boolean = \
         models.NullBooleanField(verbose_name='Boolean',
