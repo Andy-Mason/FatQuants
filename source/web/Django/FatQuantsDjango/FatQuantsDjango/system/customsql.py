@@ -99,7 +99,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                 primary_key_field_name  := NULL;
                 primary_key_field_value := NULL;
 
-                /* --- OLD QUERY USING information_schema --------------------
+                /* ### OLD QUERY USING information_schema ####################
                 FOR primary_key_field IN
                 SELECT information_schema.constraint_column_usage.column_name
                 FROM information_schema.constraint_column_usage
@@ -108,12 +108,13 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                 WHERE information_schema.table_constraints.constraint_type = 'PRIMARY KEY'
                   AND information_schema.table_constraints.table_schema = quote_ident(TG_TABLE_SCHEMA)
                   AND information_schema.table_constraints.table_name = quote_ident(TG_TABLE_NAME)
-                ----------------------------------------------------------- */
+                ########################################################### */
 
                 -- -----------------------------------------------------------
                 -- NEW QUERY USING pg_* views
                 -- -----------------------------------------------------------
                 FOR primary_key_field IN
+
                 SELECT pg_attribute.attname FROM pg_index
                 INNER JOIN  pg_attribute 
                   ON  pg_attribute.attrelid = pg_index.indrelid
@@ -178,30 +179,47 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                 -- the pg_* views instead.
                 -- -----------------------------------------------------------
                 FOR table_field IN
+
 	            SELECT
                    information_schema.columns.column_name, 
                    information_schema.columns.udt_name
-                   -- system_data_type_mapping.system_data_type  ### REMOVE WHEN TESTING COMPLETED
 	            FROM information_schema.columns
-                -- LEFT JOIN public.system_data_type_mapping  ### REMOVE WHEN TESTING COMPLETED
-                  -- ON information_schema.columns.udt_name = system_data_type_mapping.database_data_type  ### REMOVE WHEN TESTING COMPLETED
 	            WHERE table_schema = quote_ident(TG_TABLE_SCHEMA)
 	              AND table_name = quote_ident(TG_TABLE_NAME)
 	            ORDER BY information_schema.columns.ordinal_position
 
+                /* ### ALTERNATIVE QUERY USING pg_* views ####################
+                SELECT 
+                   pg_attribute.attname AS column_name,
+                   pg_type.typname AS udt_name
+                FROM pg_attribute
+                INNER JOIN pg_type 
+                   ON pg_type.oid = pg_attribute.atttypid
+                WHERE pg_attribute.attnum > 0
+                  AND NOT pg_attribute.attisdropped
+                  AND pg_attribute.attrelid = (
+                        SELECT pg_class.oid
+                        FROM pg_class
+                        LEFT JOIN pg_catalog.pg_namespace AS pg_namespace 
+                          ON pg_namespace.oid = pg_class.relnamespace
+                        WHERE pg_namespace.nspname = quote_ident(TG_TABLE_SCHEMA)
+	                      AND pg_class.relname = quote_ident(TG_TABLE_NAME)
+                          AND pg_table_is_visible(pg_class.oid)
+                      )
+                ORDER BY pg_attribute.attnum
+                ########################################################### */
+
                 LOOP
                     -- -------------------------------------------------------
-                    -- Check for missing system_data_type_mapping entry
-                    -- -------------------------------------------------------
-                    /* ### REMOVE WHEN TESTING COMPLETED
-                    IF (table_field.system_data_type IS NULL) THEN
-                        RAISE EXCEPTION 'No entry for: ''%'' in system_data_type_mapping table.', table_field.udt_name
-                        USING HINT = '(System Configuration Error)';
-                    END IF;
-                    */
-
-                    -- -------------------------------------------------------
                     -- Set the field datatype
+                    -- -------------------------------------------------------
+                    -- IMPLEMENTATION NOTE:
+                    -- This mapping used to be in a system_data_type_mapping 
+                    -- table. This is potentially dangerous because the
+                    -- mapping entries could be modified by a malicious
+                    -- process or by a well-intentioned but uninformed user.
+                    -- It is therefore safer to hard-code the mapping here.
+                    -- Execution speed should also be faster too.
                     -- -------------------------------------------------------
                     field_datatype := NULL;
 
@@ -350,7 +368,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- Boolean
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_boolean THEN
+                        IF field_datatype = datatype_boolean THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -365,7 +383,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- Integer
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_integer THEN
+                        IF field_datatype = datatype_integer THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -380,7 +398,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- Float
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_float THEN
+                        IF field_datatype = datatype_float THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -395,7 +413,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- Decimal
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_decimal THEN
+                        IF field_datatype = datatype_decimal THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -410,7 +428,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- Date
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_date THEN
+                        IF field_datatype = datatype_date THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -425,7 +443,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- Time
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_time THEN
+                        IF field_datatype = datatype_time THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -440,7 +458,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- DateTime
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_datetime THEN
+                        IF field_datatype = datatype_datetime THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -455,7 +473,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- Duration
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_duration THEN
+                        IF field_datatype = datatype_duration THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -470,7 +488,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- Text
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_text THEN
+                        IF field_datatype = datatype_text THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name || '::text'
@@ -485,7 +503,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- JSON
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_json THEN
+                        IF field_datatype = datatype_json THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -500,7 +518,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                         -- ---------------------------------------------------
                         -- BLOB
                         -- ---------------------------------------------------
-                        IF table_field.system_data_type = datatype_blob THEN
+                        IF field_datatype = datatype_blob THEN
                             IF TG_OP = 'DELETE' THEN
                                 EXECUTE
                                   'SELECT ($1).' || table_field.column_name
@@ -548,7 +566,7 @@ class SystemCustomSql(customsql_registry.AbstractCustomSql):
                             primary_key_field_name,
                             primary_key_field_value,
                             table_field.column_name,
-                            table_field.system_data_type,
+                            field_datatype,
                             value_boolean,
                             value_integer,
                             value_float,
