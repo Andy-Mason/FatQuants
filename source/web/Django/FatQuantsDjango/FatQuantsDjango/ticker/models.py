@@ -10,9 +10,9 @@ from datetime import date
 class Ticker(models.Model):
 
     ticker_id = \
-        models.AutoField(verbose_name='TickerID',
-                         db_column='ticker_id',
-                         primary_key=True)
+        models.BigAutoField(verbose_name='TickerID',
+                            db_column='ticker_id',
+                            primary_key=True)
 
     #-------------------------------------------------------------------------
     # FIELD_DATA_TYPES
@@ -33,6 +33,7 @@ class Ticker(models.Model):
                                  null=False,
                                  blank=False)
     
+    ### SLATED FOR REMOVAL
     identifier_type = \
         models.ForeignKey('reference_data.IdentifierType',
                           on_delete=models.PROTECT,
@@ -42,6 +43,7 @@ class Ticker(models.Model):
                           null=False,
                           blank=False)
     
+    ### SLATED FOR REMOVAL
     identifier_code = \
         models.CharField(verbose_name='IdentifierCode',
                          db_column='identifier_code',
@@ -254,6 +256,7 @@ class Ticker(models.Model):
                          
     class Meta:
         db_table = 'ticker'
+        ### SLATED FOR REMOVAL
         unique_together = ('identifier_type', 'identifier_code')
 
     def __str__(self):

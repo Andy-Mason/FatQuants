@@ -47,16 +47,6 @@ class RefDataCustomSql(customsql_registry.AbstractCustomSql):
 
 
             -- ---------------------------------------------------------------
-            -- Trigger: refdata_resource_type => system_audit_record
-            -- ---------------------------------------------------------------
-            DROP TRIGGER IF EXISTS after_modification_trigger ON refdata_resource_type;
-            CREATE TRIGGER after_modification_trigger
-                AFTER INSERT OR UPDATE OR DELETE ON refdata_resource_type
-                FOR EACH ROW
-                EXECUTE PROCEDURE system_audit_record_insert();
-
-
-            -- ---------------------------------------------------------------
             -- Trigger: refdata_test => system_audit_record
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS after_modification_trigger ON refdata_test;

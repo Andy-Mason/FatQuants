@@ -24,7 +24,7 @@ class Country(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=250, 
+                         max_length=200, 
                          unique=True,
                          null=False,
                          blank=False)
@@ -57,7 +57,7 @@ class Currency(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=250,
+                         max_length=200,
                          unique=True,
                          null=False,
                          blank=False)
@@ -97,7 +97,7 @@ class IdentifierType(models.Model):
     identifier_type = \
         models.CharField(verbose_name='IdentifierType',
                          db_column='identifier_type',
-                         max_length=30,
+                         max_length=20,
                          unique=True,
                          null=False,
                          blank=False)
@@ -105,7 +105,7 @@ class IdentifierType(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=250, 
+                         max_length=200, 
                          unique=True,
                          default='',
                          null=False,
@@ -140,7 +140,7 @@ class MarketIndex(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=250,
+                         max_length=200,
                          default='',
                          null=False,
                          blank=True)
@@ -159,32 +159,6 @@ class MarketIndex(models.Model):
 
 
 #-----------------------------------------------------------------------------
-# ResourceType
-#-----------------------------------------------------------------------------
-class ResourceType(models.Model):
-
-    resource_type = \
-        models.BigIntegerField(verbose_name='ResourceType',
-                               db_column='resource_type',
-                               primary_key=True)
-    
-    description = \
-        models.CharField(verbose_name='Description',
-                         db_column='description',
-                         max_length=250, 
-                         unique=True,
-                         default='',
-                         null=False,
-                         blank=False)
-
-    class Meta:
-        db_table = 'refdata_resource_type'
-
-    def __str__(self):
-        return self.name
-
-
-#-----------------------------------------------------------------------------
 # TestData
 #-----------------------------------------------------------------------------
 class TestData(models.Model):
@@ -197,7 +171,7 @@ class TestData(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=250, 
+                         max_length=200, 
                          unique=True,
                          default='',
                          null=False,
@@ -365,7 +339,7 @@ class TradingExchange(models.Model):
     trading_exchange = \
         models.CharField(verbose_name='TradingExchange',
                          db_column='trading_exchange',
-                         max_length=30,
+                         max_length=20,
                          unique=True,
                          null=False,
                          blank=False)
@@ -373,7 +347,7 @@ class TradingExchange(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=250, 
+                         max_length=200, 
                          unique=True,
                          default='',
                          null=False,
