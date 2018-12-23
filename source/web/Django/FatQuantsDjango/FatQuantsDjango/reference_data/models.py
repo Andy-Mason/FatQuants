@@ -24,7 +24,7 @@ class Country(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=200, 
+                         max_length=100, 
                          unique=True,
                          null=False,
                          blank=False)
@@ -57,7 +57,7 @@ class Currency(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=200,
+                         max_length=100,
                          unique=True,
                          null=False,
                          blank=False)
@@ -105,7 +105,7 @@ class IdentifierType(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=200, 
+                         max_length=100, 
                          unique=True,
                          default='',
                          null=False,
@@ -140,7 +140,7 @@ class MarketIndex(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=200,
+                         max_length=100,
                          default='',
                          null=False,
                          blank=True)
@@ -159,6 +159,92 @@ class MarketIndex(models.Model):
 
 
 #-----------------------------------------------------------------------------
+# MarketSector
+#-----------------------------------------------------------------------------
+class MarketSector(models.Model):
+
+    market_sector_id = \
+        models.BigAutoField(verbose_name='MarketSectorID',
+                            db_column='market_sector_id',
+                            primary_key=True)
+
+    #-------------------------------------------------------------------------
+    # SECTOR_CLASSIFICATION TYPES
+    #-------------------------------------------------------------------------
+    SECTOR_CLASSIFICATION_NONE        = 0
+    SECTOR_CLASSIFICATION_GICS        = 1
+    SECTOR_CLASSIFICATION_ICB         = 2
+    SECTOR_CLASSIFICATION_AIC         = 3
+    SECTOR_CLASSIFICATION_IA          = 4
+    SECTOR_CLASSIFICATION_MORNINGSTAR = 5
+    SECTOR_CLASSIFICATION__TYPES = ( 
+        (SECTOR_CLASSIFICATION_NONE,        '<None>'),
+        (SECTOR_CLASSIFICATION_GICS,        'GICS'),
+        (SECTOR_CLASSIFICATION_ICB,         'ICB'),
+        (SECTOR_CLASSIFICATION_AIC,         'AIC'),
+        (SECTOR_CLASSIFICATION_IA,          'IA'),
+        (SECTOR_CLASSIFICATION_MORNINGSTAR, 'Morningstar')
+    )    
+    classification_type = \
+        models.SmallIntegerField(verbose_name='ClassificationType',
+                                 db_column='classification_type',
+                                 choices=SECTOR_CLASSIFICATION__TYPES,
+                                 default=SECTOR_CLASSIFICATION_NONE,
+                                 null=False,
+                                 blank=False)
+
+    sector_category_id = \
+        models.ForeignKey('self',
+                          to_field='market_sector_id',
+                          on_delete=models.PROTECT,
+                          verbose_name='SectorCategoryID',
+                          db_column='sector_category_id',
+                          null=False,
+                          blank=False)
+    
+    description = \
+        models.CharField(verbose_name='Description',
+                         db_column='description',
+                         max_length=100, 
+                         default='',
+                         null=False,
+                         blank=False)    
+
+    class Meta:
+        db_table = 'refdata_market_sector'
+        unique_together = ('classification_type', 'sector_category_id', 'description')
+
+    def __str__(self): 
+        return self.name
+
+
+#-----------------------------------------------------------------------------
+# ProductProvider
+#-----------------------------------------------------------------------------
+class ProductProvider(models.Model):
+
+    product_provider_id = \
+        models.BigAutoField(verbose_name='ProductProviderID',
+                            db_column='product_provider_id',
+                            primary_key=True)
+    
+    description = \
+        models.CharField(verbose_name='Description',
+                         db_column='description',
+                         max_length=100,
+                         unique=True,
+                         default='',
+                         null=False,
+                         blank=False)
+    
+    class Meta:
+        db_table = 'refdata_product_provider'
+
+    def __str__(self): 
+        return self.name
+
+
+#-----------------------------------------------------------------------------
 # TestData
 #-----------------------------------------------------------------------------
 class TestData(models.Model):
@@ -171,7 +257,7 @@ class TestData(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=200, 
+                         max_length=100, 
                          unique=True,
                          default='',
                          null=False,
@@ -347,7 +433,7 @@ class TradingExchange(models.Model):
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=200, 
+                         max_length=100, 
                          unique=True,
                          default='',
                          null=False,

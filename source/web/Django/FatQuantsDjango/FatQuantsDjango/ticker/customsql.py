@@ -9,41 +9,41 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             -- Trigger: ticker table
             -- ---------------------------------------------------------------
-            DROP TRIGGER IF EXISTS after_modification_trigger ON ticker;
+            /* DROP TRIGGER IF EXISTS after_modification_trigger ON ticker;
             CREATE TRIGGER after_modification_trigger
                 AFTER INSERT OR UPDATE OR DELETE ON ticker
                 FOR EACH ROW
-                EXECUTE PROCEDURE system_audit_record_insert();
+                EXECUTE PROCEDURE system_audit_record_insert(); */
 
         
             -- ---------------------------------------------------------------
             -- Trigger: ticker_identifier table
             -- ---------------------------------------------------------------
-            DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_identifier;
+            /* DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_identifier;
             CREATE TRIGGER after_modification_trigger
                 AFTER INSERT OR UPDATE OR DELETE ON ticker_identifier
                 FOR EACH ROW
-                EXECUTE PROCEDURE system_audit_record_insert();
+                EXECUTE PROCEDURE system_audit_record_insert(); */
 
         
             -- ---------------------------------------------------------------
             -- Trigger: ticker_market_index table
             -- ---------------------------------------------------------------
-            DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_market_index;
+            /* DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_market_index;
             CREATE TRIGGER after_modification_trigger
                 AFTER INSERT OR UPDATE OR DELETE ON ticker_market_index
                 FOR EACH ROW
-                EXECUTE PROCEDURE system_audit_record_insert();
+                EXECUTE PROCEDURE system_audit_record_insert(); */
 
 
             -- ---------------------------------------------------------------
             -- Trigger: ticker_resource table
             -- ---------------------------------------------------------------
-            DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_resource;
+            /* DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_resource;
             CREATE TRIGGER after_modification_trigger
                 AFTER INSERT OR UPDATE OR DELETE ON ticker_resource
                 FOR EACH ROW
-                EXECUTE PROCEDURE system_audit_record_insert();
+                EXECUTE PROCEDURE system_audit_record_insert(); */
 
 
             -- ===============================================================
@@ -51,7 +51,7 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
             --
             -- This function implements a record-level audit trail.
             -- ===============================================================
-            CREATE OR REPLACE FUNCTION ticker_eod_data_audit_record_insert()
+            /* CREATE OR REPLACE FUNCTION ticker_eod_data_audit_record_insert()
                 RETURNS trigger AS
             $BODY$
             
@@ -333,17 +333,17 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
 
             END;
             $BODY$
-            LANGUAGE plpgsql;
+            LANGUAGE plpgsql; */
 
 
             -- ---------------------------------------------------------------
             -- Trigger: ticker_eod_data table
             -- ---------------------------------------------------------------
-            DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_eod_data;
+            /* DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_eod_data;
             CREATE TRIGGER after_modification_trigger
                 AFTER INSERT OR UPDATE OR DELETE ON ticker_eod_data
                 FOR EACH ROW
-                EXECUTE PROCEDURE ticker_eod_data_audit_record_insert();
+                EXECUTE PROCEDURE ticker_eod_data_audit_record_insert(); */
 
         """)
 

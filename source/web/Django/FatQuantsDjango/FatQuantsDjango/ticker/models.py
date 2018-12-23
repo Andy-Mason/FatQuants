@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from datetime import date
+import uuid
 
 
 #-----------------------------------------------------------------------------
@@ -14,8 +15,16 @@ class Ticker(models.Model):
                             db_column='ticker_id',
                             primary_key=True)
 
+    ticker_uuid = \
+        models.UUIDField(verbose_name='TickerUUID',
+                         db_column='ticker_uuid',
+                         unique=True,
+                         default=uuid.uuid4,
+                         null=False,
+                         editable=False)
+
     #-------------------------------------------------------------------------
-    # FIELD_DATA_TYPES
+    # TICKER_STATUS TYPES
     #-------------------------------------------------------------------------
     TICKER_STATUS_INACTIVE = -1
     TICKER_STATUS_STALE    = 0
@@ -33,33 +42,30 @@ class Ticker(models.Model):
                                  null=False,
                                  blank=False)
     
-    ### SLATED FOR REMOVAL
-    identifier_type = \
-        models.ForeignKey('reference_data.IdentifierType',
-                          on_delete=models.PROTECT,
-                          verbose_name='IdentifierType',
-                          db_column='identifier_type',
-                          default='',
-                          null=False,
-                          blank=False)
-    
-    ### SLATED FOR REMOVAL
-    identifier_code = \
-        models.CharField(verbose_name='IdentifierCode',
-                         db_column='identifier_code',
-                         max_length=40,
-                         default='',
-                         null=False,
-                         blank=False)
-    
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
-                         max_length=250,
+                         max_length=200,
                          default='',
                          null=False,
                          blank=False)
 
+    issuer_name = \
+        models.CharField(verbose_name='Issuer Name',
+                         db_column='issuer_name',
+                         max_length=100,
+                         default='',
+                         null=False,
+                         blank=True)
+
+    security_name = \
+        models.CharField(verbose_name='Security Name',
+                         db_column='security_name',
+                         max_length=100,
+                         default='',
+                         null=False,
+                         blank=True)
+    
     instrument_type = \
         models.CharField(verbose_name='Instrument Type',
                          db_column='instrument_type',
@@ -76,9 +82,17 @@ class Ticker(models.Model):
                          null=False,
                          blank=True)
     
-    instrument_leverage = \
-        models.FloatField(verbose_name='Instrument Leverage',
-                          db_column='instrument_leverage',
+    product_provider_id = \
+        models.ForeignKey('reference_data.ProductProvider',
+                          on_delete=models.PROTECT,
+                          verbose_name='Product Provider',
+                          db_column='product_provider_id',
+                          null=True,
+                          blank=True)
+
+    product_leverage = \
+        models.FloatField(verbose_name='Product Leverage',
+                          db_column='product_leverage',
                           null=True,
                           blank=True)
 
@@ -100,27 +114,11 @@ class Ticker(models.Model):
                          null=False,
                          blank=True)
     
-    issuer_name = \
-        models.CharField(verbose_name='Issuer Name',
-                         db_column='issuer_name',
-                         max_length=100,
-                         default='',
-                         null=False,
-                         blank=True)
-
-    security_name = \
-        models.CharField(verbose_name='Security Name',
-                         db_column='security_name',
-                         max_length=100,
-                         default='',
-                         null=False,
-                         blank=True)
-    
-    registered_country_code = \
+    registered_country_id = \
         models.ForeignKey('reference_data.Country',
                           on_delete=models.PROTECT,
                           verbose_name='Registered Country',
-                          db_column='registered_country_code',
+                          db_column='registered_country_id',
                           null=True,
                           blank=True)
     
@@ -136,19 +134,19 @@ class Ticker(models.Model):
                           null=True,
                           blank=True)
     
-    trading_currency = \
+    trading_currency_id = \
         models.ForeignKey('reference_data.Currency',
                           on_delete=models.PROTECT,
                           verbose_name='Trading Currency',
-                          db_column='trading_currency',
+                          db_column='trading_currency_id',
                           null=True,
                           blank=True)
 
-    trading_exchange = \
+    trading_exchange_id = \
         models.ForeignKey('reference_data.TradingExchange',
                           on_delete=models.PROTECT,
                           verbose_name='Trading Exchange',
-                          db_column='trading_exchange',
+                          db_column='trading_exchange_id',
                           null=True,
                           blank=True)
     
@@ -160,11 +158,14 @@ class Ticker(models.Model):
                          null=False,
                          blank=True)
     
-    listing_date = \
-        models.DateField(verbose_name='Listing Date',
-                         db_column='listing_date',
-                         null=True,
+    listing_code = \
+        models.CharField(verbose_name='Listing Code',
+                         db_column='listing_code',
+                         max_length=20,
+                         default='',
+                         null=False,
                          blank=True)
+    
     
     listing_category = \
         models.CharField(verbose_name='Listing Category',
@@ -172,6 +173,11 @@ class Ticker(models.Model):
                          max_length=60,
                          default='',
                          null=False,
+                         blank=True)
+    listing_date = \
+        models.DateField(verbose_name='Listing Date',
+                         db_column='listing_date',
+                         null=True,
                          blank=True)
     
     exchange_market_size = \
@@ -188,30 +194,30 @@ class Ticker(models.Model):
                          null=False,
                          blank=True)
     
-    market_segment_code = \
-        models.CharField(verbose_name='Market Segment Code',
-                         db_column='market_segment_code',
+    trading_segment = \
+        models.CharField(verbose_name='Trading Segment',
+                         db_column='trading_segment',
                          max_length=20,
                          default='',
                          null=False,
                          blank=True)
     
-    market_sector = \
-        models.CharField(verbose_name='Market Sector',
-                         db_column='market_sector',
-                         max_length=60,
-                         default='',
-                         null=False,
-                         blank=True)
+    market_sector_id = \
+        models.ForeignKey('reference_data.MarketSector',
+                          on_delete=models.PROTECT,
+                          verbose_name='Market Sector',
+                          db_column='market_sector_id',
+                          null=True,
+                          blank=True)
     
-    market_subsector = \
-        models.CharField(verbose_name='Market Subsector',
-                         db_column='market_subsector',
-                         max_length=60,
-                         default='',
-                         null=False,
-                         blank=True)
-    
+    morningstar_category_id = \
+        models.ForeignKey('reference_data.MarketSector',
+                          on_delete=models.PROTECT,
+                          verbose_name='Morningstar Category',
+                          db_column='morningstar_category_id',
+                          null=True,
+                          blank=True)
+    """
     morningstar_category = \
         models.CharField(verbose_name='Morningstar Category',
                          db_column='morningstar_category',
@@ -253,11 +259,9 @@ class Ticker(models.Model):
                          default='',
                          null=False,
                          blank=True)
-                         
+    """       
     class Meta:
         db_table = 'ticker'
-        ### SLATED FOR REMOVAL
-        unique_together = ('identifier_type', 'identifier_code')
 
     def __str__(self):
         return self.name
@@ -266,6 +270,7 @@ class Ticker(models.Model):
 #-----------------------------------------------------------------------------
 # TickerIdentifier
 #-----------------------------------------------------------------------------
+"""
 class TickerIdentifier(models.Model):
 
     id = \
@@ -305,11 +310,13 @@ class TickerIdentifier(models.Model):
 
     def __str__(self): 
         return self.name
+"""
 
 
 #-----------------------------------------------------------------------------
 # TickerMarketIndex
 #-----------------------------------------------------------------------------
+"""
 class TickerMarketIndex(models.Model):
 
     id = \
@@ -341,11 +348,13 @@ class TickerMarketIndex(models.Model):
 
     def __str__(self): 
         return self.name
+"""
 
 
 #-----------------------------------------------------------------------------
 # TickerResource
 #-----------------------------------------------------------------------------
+"""
 class TickerResource(models.Model):
 
     id = \
@@ -385,11 +394,13 @@ class TickerResource(models.Model):
 
     def __str__(self): 
         return self.name
+"""
 
 
 #-----------------------------------------------------------------------------
 # TickerEodData
 #-----------------------------------------------------------------------------
+"""
 class TickerEodData(models.Model):
 
     ticker_eod_data_id = \
@@ -458,11 +469,13 @@ class TickerEodData(models.Model):
 
     def __str__(self): 
         return self.name
+"""
 
 
 #-----------------------------------------------------------------------------
 # TickerEodDataAuditRecord
 #-----------------------------------------------------------------------------
+"""
 class TickerEodDataAuditRecord(models.Model):
 
     audit_id = \
@@ -564,3 +577,4 @@ class TickerEodDataAuditRecord(models.Model):
 
     def __str__(self): 
         return self.name
+"""

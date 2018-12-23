@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     #'json_data',
     'reference_data',
     'system',
-    #'ticker',
+    'ticker',
 
     # Django bits
     'django.contrib.admin',

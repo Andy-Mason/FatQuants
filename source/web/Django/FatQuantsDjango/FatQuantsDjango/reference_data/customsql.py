@@ -47,6 +47,26 @@ class RefDataCustomSql(customsql_registry.AbstractCustomSql):
 
 
             -- ---------------------------------------------------------------
+            -- Trigger: refdata_market_sector => system_audit_record
+            -- ---------------------------------------------------------------
+            DROP TRIGGER IF EXISTS after_modification_trigger ON refdata_market_sector;
+            CREATE TRIGGER after_modification_trigger
+                AFTER INSERT OR UPDATE OR DELETE ON refdata_market_sector
+                FOR EACH ROW
+                EXECUTE PROCEDURE system_audit_record_insert();
+
+
+            -- ---------------------------------------------------------------
+            -- Trigger: refdata_product_provider => system_audit_record
+            -- ---------------------------------------------------------------
+            DROP TRIGGER IF EXISTS after_modification_trigger ON refdata_product_provider;
+            CREATE TRIGGER after_modification_trigger
+                AFTER INSERT OR UPDATE OR DELETE ON refdata_product_provider
+                FOR EACH ROW
+                EXECUTE PROCEDURE system_audit_record_insert();
+
+
+            -- ---------------------------------------------------------------
             -- Trigger: refdata_test => system_audit_record
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS after_modification_trigger ON refdata_test;
