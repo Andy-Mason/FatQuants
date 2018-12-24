@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.postgres.fields import JSONField
 
 from datetime import date
 import uuid
@@ -65,7 +66,38 @@ class Ticker(models.Model):
                          default='',
                          null=False,
                          blank=True)
-    
+
+    #-------------------------------------------------------------------------
+    # INSTRUMENT_MODEL TYPES
+    #-------------------------------------------------------------------------
+    INSTRUMENT_MODEL_NONE      = 0
+    INSTRUMENT_MODEL_COMMODITY = 1
+    INSTRUMENT_MODEL_FX        = 2
+    INSTRUMENT_MODEL_INDEX     = 3
+    INSTRUMENT_MODEL_BOND      = 4
+    INSTRUMENT_MODEL_SHARE     = 5
+    INSTRUMENT_MODEL_INVTRUST  = 6
+    INSTRUMENT_MODEL_ETP       = 7
+    INSTRUMENT_MODEL_FUND      = 8
+    INSTRUMENT_MODEL__TYPES = ( 
+        (INSTRUMENT_MODEL_NONE,      '<None>'), 
+        (INSTRUMENT_MODEL_COMMODITY, 'Commodity'), 
+        (INSTRUMENT_MODEL_FX,        'FX'),
+        (INSTRUMENT_MODEL_INDEX,     'Index'),
+        (INSTRUMENT_MODEL_BOND,      'Bond'),
+        (INSTRUMENT_MODEL_SHARE,     'Share'),
+        (INSTRUMENT_MODEL_INVTRUST,  'InvestmentTrust'),
+        (INSTRUMENT_MODEL_ETP,       'ETP'),
+        (INSTRUMENT_MODEL_FUND,      'Fund')
+    )    
+    instrument_model = \
+        models.SmallIntegerField(verbose_name='Instrument Model',
+                                 db_column='instrument_model',
+                                 choices=INSTRUMENT_MODEL__TYPES,
+                                 default=INSTRUMENT_MODEL_NONE,
+                                 null=False,
+                                 blank=False)
+
     instrument_type = \
         models.CharField(verbose_name='Instrument Type',
                          db_column='instrument_type',
@@ -89,13 +121,13 @@ class Ticker(models.Model):
                           db_column='product_provider_id',
                           null=True,
                           blank=True)
-
+    
     product_leverage = \
         models.FloatField(verbose_name='Product Leverage',
                           db_column='product_leverage',
                           null=True,
                           blank=True)
-
+    
     #-------------------------------------------------------------------------
     # FUND_UNIT_TYPES
     #-------------------------------------------------------------------------
@@ -133,15 +165,25 @@ class Ticker(models.Model):
                           db_column='quote_units',
                           null=True,
                           blank=True)
+
+    quote_currency_id = \
+        models.ForeignKey('reference_data.Currency',
+                          on_delete=models.PROTECT,
+                          related_name='quote_currency',
+                          verbose_name='Quote Currency',
+                          db_column='quote_currency_id',
+                          null=True,
+                          blank=True)
     
     trading_currency_id = \
         models.ForeignKey('reference_data.Currency',
                           on_delete=models.PROTECT,
+                          related_name='trading_currency',
                           verbose_name='Trading Currency',
                           db_column='trading_currency_id',
                           null=True,
                           blank=True)
-
+    
     trading_exchange_id = \
         models.ForeignKey('reference_data.TradingExchange',
                           on_delete=models.PROTECT,
@@ -205,6 +247,7 @@ class Ticker(models.Model):
     market_sector_id = \
         models.ForeignKey('reference_data.MarketSector',
                           on_delete=models.PROTECT,
+                          related_name='market_sector',
                           verbose_name='Market Sector',
                           db_column='market_sector_id',
                           null=True,
@@ -213,53 +256,18 @@ class Ticker(models.Model):
     morningstar_category_id = \
         models.ForeignKey('reference_data.MarketSector',
                           on_delete=models.PROTECT,
+                          related_name='morningstar_category',
                           verbose_name='Morningstar Category',
                           db_column='morningstar_category_id',
                           null=True,
                           blank=True)
-    """
-    morningstar_category = \
-        models.CharField(verbose_name='Morningstar Category',
-                         db_column='morningstar_category',
-                         max_length=100,
-                         default='',
-                         null=False,
-                         blank=True)
     
-    issue_date = \
-        models.DateField(verbose_name='Issue Date',
-                         db_column='issue_date',
-                         null=True,
-                         blank=True)
+    json_data = \
+        JSONField(verbose_name='JSON Data',
+                  db_column='json_data',
+                  null=True,
+                  blank=True)
 
-    maturity_date = \
-        models.DateField(verbose_name='Maturity Date',
-                         db_column='maturity_date',
-                         null=True,
-                         blank=True)
-    
-    coupon_type = \
-        models.CharField(verbose_name='Coupon Type',
-                         db_column='coupon_type',
-                         max_length=20,
-                         default='',
-                         null=False,
-                         blank=True)
-
-    coupon_value = \
-        models.FloatField(verbose_name='Coupon Value',
-                          db_column='coupon_value',
-                          null=True,
-                          blank=True)
-    
-    coupon_period = \
-        models.CharField(verbose_name='Coupon Period',
-                         db_column='coupon_period',
-                         max_length=20,
-                         default='',
-                         null=False,
-                         blank=True)
-    """       
     class Meta:
         db_table = 'ticker'
 
@@ -270,7 +278,6 @@ class Ticker(models.Model):
 #-----------------------------------------------------------------------------
 # TickerIdentifier
 #-----------------------------------------------------------------------------
-"""
 class TickerIdentifier(models.Model):
 
     id = \
@@ -287,12 +294,12 @@ class TickerIdentifier(models.Model):
                           null=False,
                           blank=False)
     
-    identifier_type = \
+    identifier_type_id = \
         models.ForeignKey('reference_data.IdentifierType',
                           on_delete=models.PROTECT,
                           verbose_name='Identifier Type',
-                          db_column='identifier_type',
-                          default='',
+                          db_column='identifier_type_id',
+                          default=0,
                           null=False,
                           blank=False)
     
@@ -306,17 +313,15 @@ class TickerIdentifier(models.Model):
 
     class Meta:
         db_table = 'ticker_identifier'
-        unique_together = ('ticker_id', 'identifier_type')
+        unique_together = ('ticker_id', 'identifier_type_id')
 
     def __str__(self): 
         return self.name
-"""
 
 
 #-----------------------------------------------------------------------------
 # TickerMarketIndex
 #-----------------------------------------------------------------------------
-"""
 class TickerMarketIndex(models.Model):
 
     id = \
@@ -332,7 +337,7 @@ class TickerMarketIndex(models.Model):
                           default=0,
                           null=False,
                           blank=False)
-    
+        
     market_index_id = \
         models.ForeignKey('reference_data.MarketIndex',
                           on_delete=models.PROTECT,
@@ -341,20 +346,18 @@ class TickerMarketIndex(models.Model):
                           default=0,
                           null=False,
                           blank=False)
-
+    
     class Meta:
         db_table = 'ticker_market_index'
         unique_together = ('ticker_id', 'market_index_id')
 
     def __str__(self): 
         return self.name
-"""
 
 
 #-----------------------------------------------------------------------------
 # TickerResource
 #-----------------------------------------------------------------------------
-"""
 class TickerResource(models.Model):
 
     id = \
@@ -371,30 +374,41 @@ class TickerResource(models.Model):
                           null=False,
                           blank=False)
     
+    #-------------------------------------------------------------------------
+    # RESOURCE TYPES
+    #-------------------------------------------------------------------------
+    RESOURCE_NONE            = 0
+    RESOURCE_COMPANY_WEBSITE = 1
+    RESOURCE_LSE_WEBPAGE     = 2
+    RESOURCE_AJBELL_WEBPAGE  = 3
+    RESOURCE__TYPES = ( 
+        (RESOURCE_NONE,            '<None>'), 
+        (RESOURCE_COMPANY_WEBSITE, 'Company website'), 
+        (RESOURCE_LSE_WEBPAGE,     'London Stock Exchange web page'),
+        (RESOURCE_AJBELL_WEBPAGE,  'AJ Bell web page')
+    )    
     resource_type = \
-        models.ForeignKey('reference_data.ResourceType',
-                          on_delete=models.PROTECT,
-                          verbose_name='ResourceType',
-                          db_column='resource_type',
-                          default=0,
-                          null=False,
-                          blank=False)
+        models.SmallIntegerField(verbose_name='Resource Type',
+                                 db_column='resource_type',
+                                 choices=RESOURCE__TYPES,
+                                 default=RESOURCE_NONE,
+                                 null=False,
+                                 blank=False)
     
     resource_url = \
-        models.URLField(verbose_name='ResourceURL',
+        models.URLField(verbose_name='Resource URL',
                         db_column='resource_url',
-                        max_length=16000,
+                        max_length=2000,
                         default='',
                         null=False,
                         blank=False)
-
+    
     class Meta:
         db_table = 'ticker_resource'
         unique_together = ('ticker_id', 'resource_type')
 
     def __str__(self): 
         return self.name
-"""
 
 
 #-----------------------------------------------------------------------------
