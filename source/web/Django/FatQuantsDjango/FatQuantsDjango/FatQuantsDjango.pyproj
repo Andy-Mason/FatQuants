@@ -153,6 +153,7 @@
     <Content Include="app\templates\app\layout.html" />
     <Content Include="app\templates\app\login.html" />
     <Content Include="app\templates\app\loginpartial.html" />
+    <Content Include="requirements.txt" />
     <Content Include="system\templates\index.html" />
     <Content Include="ticker\templates\index.html" />
   </ItemGroup>
