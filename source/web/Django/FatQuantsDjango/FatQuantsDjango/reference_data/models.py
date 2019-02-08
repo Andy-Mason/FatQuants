@@ -266,7 +266,7 @@ class TestData(models.Model):
     notes = \
         models.CharField(verbose_name='Notes',
                          db_column='notes',
-                         max_length=1000,
+                         max_length=250,
                          null=True,
                          blank=True)
     
