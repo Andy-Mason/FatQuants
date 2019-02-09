@@ -396,8 +396,8 @@ class TickerResource(models.Model):
                                  blank=False)
     
     resource_url = \
-        models.URLField(verbose_name='Resource URL',
-                        db_column='resource_url',
+        models.URLField(verbose_name='Resource',
+                        db_column='resource',
                         max_length=2000,
                         default='',
                         null=False,
@@ -414,7 +414,6 @@ class TickerResource(models.Model):
 #-----------------------------------------------------------------------------
 # TickerEodData
 #-----------------------------------------------------------------------------
-"""
 class TickerEodData(models.Model):
 
     ticker_eod_data_id = \
@@ -438,14 +437,22 @@ class TickerEodData(models.Model):
                          null=False,
                          blank=False)
     
+    #-------------------------------------------------------------------------
+    # DATA_SOURCE TYPES
+    #-------------------------------------------------------------------------
+    DATA_SOURCE_NONE = 0
+    DATA_SOURCE_FLAT_FILE = 1
+    DATA_SOURCE__TYPES = ( 
+        (DATA_SOURCE_NONE,      '<None>'), 
+        (DATA_SOURCE_FLAT_FILE, 'File')
+    )    
     data_source = \
-        models.ForeignKey('reference_data.ResourceType',
-                          on_delete=models.PROTECT,
-                          verbose_name='DataSource',
-                          db_column='data_source',
-                          default=0,
-                          null=False,
-                          blank=False)
+        models.SmallIntegerField(verbose_name='Data Source',
+                                 db_column='data_source',
+                                 choices=DATA_SOURCE__TYPES,
+                                 default=DATA_SOURCE_NONE,
+                                 null=False,
+                                 blank=False)
     
     open_value = \
         models.FloatField(verbose_name='Open',
@@ -477,17 +484,34 @@ class TickerEodData(models.Model):
                           null=True,
                           blank=True)
 
+    # NOTE: This will be used in early versions of the system until TickerEodDataAuditRecord is implemented
+    created_timestamp = \
+        models.DateTimeField(verbose_name='Created',
+                             db_column='created_timestamp',
+                             default=timezone.now,
+                             null=False,
+                             blank=False)
+    
+    # NOTE: This will be used in early versions of the system until TickerEodDataAuditRecord is implemented
+    updated_timestamp = \
+        models.DateTimeField(verbose_name='Updated',
+                             db_column='updated_timestamp',
+                             default=timezone.now,
+                             null=True,
+                             blank=True)
+
     class Meta:
         db_table = 'ticker_eod_data'
         unique_together = ('ticker_id', 'close_date')
-
+    
     def __str__(self): 
         return self.name
-"""
 
 
 #-----------------------------------------------------------------------------
 # TickerEodDataAuditRecord
+#
+# NOTE: This will NOT be used in early versions of the system.
 #-----------------------------------------------------------------------------
 """
 class TickerEodDataAuditRecord(models.Model):

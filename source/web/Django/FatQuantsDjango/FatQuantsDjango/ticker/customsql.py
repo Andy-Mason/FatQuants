@@ -47,11 +47,68 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
 
 
             -- ===============================================================
+            -- Trigger function for ticker_eod_data.created_timestamp
+            --
+            -- NOTE: This will be used in early versions of the system.
+            -- ===============================================================
+            CREATE OR REPLACE FUNCTION ticker_eod_data_created_timestamp()
+                RETURNS trigger AS
+            $BODY$
+            BEGIN
+                NEW.created_timestamp := current_timestamp;
+                RETURN NULL;
+            END;
+            $BODY$
+            LANGUAGE plpgsql;
+
+            -- ---------------------------------------------------------------
+            -- Trigger: ticker_eod_data.created_timestamp
+            --
+            -- NOTE: This will be used in early versions of the system.
+            -- ---------------------------------------------------------------
+            DROP TRIGGER IF EXISTS created_timestamp_trigger ON ticker_eod_data;
+            CREATE TRIGGER created_timestamp_trigger
+                AFTER INSERT ON ticker_eod_data
+                FOR EACH ROW
+                EXECUTE PROCEDURE ticker_eod_data_created_timestamp();
+
+
+            -- ===============================================================
+            -- Trigger function for ticker_eod_data.updated_timestamp
+            --
+            -- NOTE: This will be used in early versions of the system.
+            -- ===============================================================
+            CREATE OR REPLACE FUNCTION ticker_eod_data_updated_timestamp()
+                RETURNS trigger AS
+            $BODY$
+            BEGIN
+                NEW.updated_timestamp := current_timestamp;
+                RETURN NULL;
+            END;
+            $BODY$
+            LANGUAGE plpgsql;
+
+            -- ---------------------------------------------------------------
+            -- Trigger: ticker_eod_data.updated_timestamp
+            --
+            -- NOTE: This will be used in early versions of the system.
+            -- ---------------------------------------------------------------
+            DROP TRIGGER IF EXISTS updated_timestamp_trigger ON ticker_eod_data;
+            CREATE TRIGGER updated_timestamp_trigger
+                AFTER UPDATE ON ticker_eod_data
+                FOR EACH ROW
+                EXECUTE PROCEDURE ticker_eod_data_updated_timestamp();
+
+
+            -- ===============================================================
             -- Trigger function for ticker_eod_data_audit_record table
             --
             -- This function implements a record-level audit trail.
+            --
+            -- NOTE: This will NOT be used in early versions of the system.
             -- ===============================================================
-            /* CREATE OR REPLACE FUNCTION ticker_eod_data_audit_record_insert()
+            /*
+            CREATE OR REPLACE FUNCTION ticker_eod_data_audit_record_insert()
                 RETURNS trigger AS
             $BODY$
             
@@ -333,17 +390,22 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
 
             END;
             $BODY$
-            LANGUAGE plpgsql; */
+            LANGUAGE plpgsql;
+            */
 
 
             -- ---------------------------------------------------------------
             -- Trigger: ticker_eod_data table
+            --
+            -- NOTE: This will NOT be used in early versions of the system.
             -- ---------------------------------------------------------------
-            /* DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_eod_data;
+            /*
+            DROP TRIGGER IF EXISTS after_modification_trigger ON ticker_eod_data;
             CREATE TRIGGER after_modification_trigger
                 AFTER INSERT OR UPDATE OR DELETE ON ticker_eod_data
                 FOR EACH ROW
-                EXECUTE PROCEDURE ticker_eod_data_audit_record_insert(); */
+                EXECUTE PROCEDURE ticker_eod_data_audit_record_insert();
+            */
 
         """)
 
