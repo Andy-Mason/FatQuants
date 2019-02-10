@@ -9,11 +9,13 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             -- Trigger: batch_type => system_audit_record
             -- ---------------------------------------------------------------
+            /*
             DROP TRIGGER IF EXISTS after_modification_trigger ON batch_type;
             CREATE TRIGGER after_modification_trigger
                 AFTER INSERT OR UPDATE OR DELETE ON batch_type
                 FOR EACH ROW
                 EXECUTE PROCEDURE system_audit_record_insert();
+            */
 
             -- ---------------------------------------------------------------
             -- Trigger: batch_process_type => system_audit_record
@@ -27,11 +29,13 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             -- Trigger: batch_type_batch_process_type => system_audit_record
             -- ---------------------------------------------------------------
+            /*
             DROP TRIGGER IF EXISTS after_modification_trigger ON batch_type_batch_process_type;
             CREATE TRIGGER after_modification_trigger
                 AFTER INSERT OR UPDATE OR DELETE ON batch_type_batch_process_type
                 FOR EACH ROW
                 EXECUTE PROCEDURE system_audit_record_insert();
+            */
 
 
             -- ===============================================================
@@ -121,7 +125,7 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS log_timestamp_trigger ON batch_process_log;
             CREATE TRIGGER log_timestamp_trigger
-                AFTER INSERT OR UPDATE ON batch_process_log
+                AFTER INSERT ON batch_process_log
                 FOR EACH ROW
                 EXECUTE PROCEDURE batch_process_log_timestamp();
 
@@ -173,9 +177,9 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
 
 
             -- ===============================================================
-            -- Trigger function for batch_process_task_log.log_timestamp
+            -- Trigger function for batch_process_task_intervention.intervention_timestamp
             -- ===============================================================
-            CREATE OR REPLACE FUNCTION batch_process_task_log_timestamp()
+            CREATE OR REPLACE FUNCTION batch_process_task_intervention_timestamp()
                 RETURNS trigger AS
             $BODY$
             BEGIN
@@ -186,13 +190,13 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             LANGUAGE plpgsql;
 
             -- ---------------------------------------------------------------
-            -- Trigger: batch_process_task_log.log_timestamp
+            -- Trigger: batch_process_task_intervention.intervention_timestamp
             -- ---------------------------------------------------------------
-            DROP TRIGGER IF EXISTS log_timestamp_trigger ON batch_process_task_log;
-            CREATE TRIGGER log_timestamp_trigger
-                AFTER INSERT OR UPDATE ON batch_process_task_log
+            DROP TRIGGER IF EXISTS intervention_timestamp_trigger ON batch_process_task_intervention;
+            CREATE TRIGGER intervention_timestamp_trigger
+                AFTER INSERT OR UPDATE ON batch_process_task_intervention
                 FOR EACH ROW
-                EXECUTE PROCEDURE batch_process_task_log_timestamp();
+                EXECUTE PROCEDURE batch_process_task_intervention_timestamp();
 
         """)
 

@@ -6,6 +6,7 @@ from django.contrib.postgres.fields import JSONField
 #-----------------------------------------------------------------------------
 # BatchType
 #-----------------------------------------------------------------------------
+"""
 class BatchType(models.Model):
 
     batch_type_id = \
@@ -35,6 +36,7 @@ class BatchType(models.Model):
 
     def __str__(self):
         return self.name
+"""
 
 
 #-----------------------------------------------------------------------------
@@ -50,7 +52,7 @@ class BatchProcessType(models.Model):
     batch_process_type_tag = \
         models.CharField(verbose_name='BatchProcessTypeTag',
                          db_column='batch_process_type_tag',
-                         max_length=100, 
+                         max_length=50, 
                          unique=True,
                          default='',
                          null=False,
@@ -97,6 +99,7 @@ class BatchProcessType(models.Model):
 #-----------------------------------------------------------------------------
 # BatchTypeBatchProcessType
 #-----------------------------------------------------------------------------
+"""
 class BatchTypeBatchProcessType(models.Model):
 
     id = \
@@ -128,6 +131,7 @@ class BatchTypeBatchProcessType(models.Model):
 
     def __str__(self):
         return self.name
+"""
 
 
 #-----------------------------------------------------------------------------
@@ -140,6 +144,7 @@ class BatchProcess(models.Model):
                             db_column='batch_process_id',
                             primary_key=True)
     
+    
     batch_process_type_id = \
         models.ForeignKey(BatchProcessType,
                           on_delete=models.PROTECT,
@@ -148,15 +153,15 @@ class BatchProcess(models.Model):
                           default=0,
                           null=False,
                           blank=False)
-
-    description = \
-        models.CharField(verbose_name='Description',
-                         db_column='description',
-                         max_length=100, 
+    
+    batch_process_tag = \
+        models.CharField(verbose_name='BatchProcessTag',
+                         db_column='batch_process_tag',
+                         max_length=50, 
                          default='',
                          null=False,
                          blank=True)
-
+    
     test_instance = \
         models.BooleanField(verbose_name='TestInstance',
                             db_column='test_instance',
@@ -166,7 +171,7 @@ class BatchProcess(models.Model):
 
     #-------------------------------------------------------------------------
     # PROCESS_STATUS TYPES
-    #-------------------------------------------------------------------------    
+    #-------------------------------------------------------------------------
     PROCESS_STATUS_PENDING = 0
     PROCESS_STATUS_RUNNING = 1
     PROCESS_STATUS_FINISHED = 2
@@ -175,7 +180,7 @@ class BatchProcess(models.Model):
     PROCESS_STATUS_CANCELLED = -3
     PROCESS_STATUS__TYPES = ( 
         (PROCESS_STATUS_PENDING,    'Pending'), 
-        (PROCESS_STATUS_RUNNING,    'Running'), 
+        (PROCESS_STATUS_RUNNING,    'Running...'), 
         (PROCESS_STATUS_FINISHED,   'Finished'),
         (PROCESS_STATUS_ABORTED,    'Aborted'),
         (PROCESS_STATUS_CANCELLING, 'Cancelling...'),
@@ -202,7 +207,7 @@ class BatchProcess(models.Model):
                              default=timezone.now,
                              null=True,
                              blank=True)
-
+    
     class Meta:
         db_table = 'batch_process'
 
@@ -219,7 +224,7 @@ class BatchProcessJsonData(models.Model):
         models.BigAutoField(verbose_name='ID',
                             db_column='id',
                             primary_key=True)
-
+    
     batch_process_id = \
         models.ForeignKey(BatchProcess,
                           on_delete=models.CASCADE,
@@ -262,7 +267,7 @@ class BatchProcessLog(models.Model):
         models.BigAutoField(verbose_name='BatchProcessLogID',
                             db_column='batch_process_log_id',
                             primary_key=True)
-        
+    
     batch_process_id = \
         models.ForeignKey(BatchProcess,
                           on_delete=models.CASCADE,
@@ -273,29 +278,29 @@ class BatchProcessLog(models.Model):
                           blank=False)
 
     #-------------------------------------------------------------------------
-    # PROCESS_OPERATION TYPES
+    # PROCESS_ACTION TYPES
     #-------------------------------------------------------------------------
-    PROCESS_OPERATION_CANCEL       = -1
-    PROCESS_OPERATION_NONE         = 0
-    PROCESS_OPERATION_RUN          = 1
-    PROCESS_OPERATION_RESUME       = 2
-    PROCESS_OPERATION_RERUN_ERRORS = 3
-    PROCESS_OPERATION_RERUN_ALL    = 4
-    PROCESS_OPERATION__TYPES = ( 
-        (PROCESS_OPERATION_CANCEL,       'Cancel'), 
-        (PROCESS_OPERATION_NONE,         '<None>'), 
-        (PROCESS_OPERATION_RUN,          'Run'), 
-        (PROCESS_OPERATION_RESUME,       'Resume'), 
-        (PROCESS_OPERATION_RERUN_ERRORS, 'ReRun Errors'), 
-        (PROCESS_OPERATION_RERUN_ALL,    'ReRun All')
+    PROCESS_ACTION_CANCEL       = -1
+    PROCESS_ACTION_NONE         = 0
+    PROCESS_ACTION_RUN          = 1
+    PROCESS_ACTION_RESUME       = 2
+    PROCESS_ACTION_RERUN_ERRORS = 3
+    PROCESS_ACTION_RERUN_ALL    = 4
+    PROCESS_ACTION__TYPES = ( 
+        (PROCESS_ACTION_CANCEL,       'Cancel'), 
+        (PROCESS_ACTION_NONE,         '<None>'), 
+        (PROCESS_ACTION_RUN,          'Run'), 
+        (PROCESS_ACTION_RESUME,       'Resume'), 
+        (PROCESS_ACTION_RERUN_ERRORS, 'ReRun Errors'), 
+        (PROCESS_ACTION_RERUN_ALL,    'ReRun All')
     )
-    process_operation = \
-       models.SmallIntegerField(verbose_name='ProcessOperation',
-                                db_column='process_operation',
-                                choices=PROCESS_OPERATION__TYPES,
+    process_action = \
+       models.SmallIntegerField(verbose_name='ProcessAction',
+                                db_column='process_action',
+                                choices=PROCESS_ACTION__TYPES,
                                 null=True,
                                 blank=True)
-
+    
     log_timestamp = \
         models.DateTimeField(verbose_name='TimeStamp',
                              db_column='log_timestamp',
@@ -416,15 +421,15 @@ class BatchProcessTask(models.Model):
 
 
 #-----------------------------------------------------------------------------
-# BatchProcessTaskLog
+# BatchProcessTaskIntervention
 #-----------------------------------------------------------------------------
-class BatchProcessTaskLog(models.Model):
+class BatchProcessTaskIntervention(models.Model):
 
     id = \
         models.BigAutoField(verbose_name='ID',
                             db_column='id',
                             primary_key=True)
-        
+    
     batch_process_task_id = \
         models.ForeignKey(BatchProcessTask,
                           on_delete=models.CASCADE,
@@ -434,9 +439,9 @@ class BatchProcessTaskLog(models.Model):
                           null=False,
                           blank=False)
     
-    log_timestamp = \
+    intervention_timestamp = \
         models.DateTimeField(verbose_name='TimeStamp',
-                             db_column='log_timestamp',
+                             db_column='intervention_timestamp',
                              default=timezone.now,
                              null=False,
                              blank=False)
@@ -461,7 +466,8 @@ class BatchProcessTaskLog(models.Model):
                                 blank=False)
     
     class Meta:
-        db_table = 'batch_process_task_log'
+        db_table = 'batch_process_task_intervention'
 
     def __str__(self):
         return self.name
+

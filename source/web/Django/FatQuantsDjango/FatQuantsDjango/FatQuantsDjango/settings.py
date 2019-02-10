@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     #'app',
 
     # Add your apps here to enable them
-    #'batch_process',
-    #'json_data',
+    'batch_process',
+    'json_data',
     'reference_data',
     'system',
     'ticker',
