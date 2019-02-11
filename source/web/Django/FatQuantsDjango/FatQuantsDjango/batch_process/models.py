@@ -4,42 +4,6 @@ from django.contrib.postgres.fields import JSONField
 
 
 #-----------------------------------------------------------------------------
-# BatchType
-#-----------------------------------------------------------------------------
-"""
-class BatchType(models.Model):
-
-    batch_type_id = \
-        models.AutoField(verbose_name='BatchTypeID',
-                         db_column='batch_type_id',
-                         primary_key=True)
-    
-    description = \
-        models.CharField(verbose_name='Description',
-                         db_column='description',
-                         max_length=100, 
-                         unique=True,
-                         default='',
-                         null=False,
-                         blank=False)
-
-    notes = \
-        models.CharField(verbose_name='Notes',
-                         db_column='notes',
-                         max_length=250, 
-                         default='',
-                         null=False,
-                         blank=True)
-
-    class Meta:
-        db_table = 'batch_type'
-
-    def __str__(self):
-        return self.name
-"""
-
-
-#-----------------------------------------------------------------------------
 # BatchProcessType
 #-----------------------------------------------------------------------------
 class BatchProcessType(models.Model):
@@ -94,44 +58,6 @@ class BatchProcessType(models.Model):
 
     def __str__(self):
         return self.name
-
-
-#-----------------------------------------------------------------------------
-# BatchTypeBatchProcessType
-#-----------------------------------------------------------------------------
-"""
-class BatchTypeBatchProcessType(models.Model):
-
-    id = \
-        models.AutoField(verbose_name='ID',
-                         db_column='id',
-                         primary_key=True)
-
-    batch_type_id = \
-        models.ForeignKey(BatchType,
-                          on_delete=models.PROTECT,
-                          verbose_name='BatchTypeID',
-                          db_column='batch_type_id',
-                          default=0,
-                          null=False,
-                          blank=False)
-    
-    batch_process_type_id = \
-        models.ForeignKey(BatchProcessType,
-                          on_delete=models.PROTECT,
-                          verbose_name='BatchProcessTypeID',
-                          db_column='batch_process_type_id',
-                          default=0,
-                          null=False,
-                          blank=False)
-    
-    class Meta:
-        db_table = 'batch_type_batch_process_type'
-        unique_together = ('batch_type_id', 'batch_process_type_id')
-
-    def __str__(self):
-        return self.name
-"""
 
 
 #-----------------------------------------------------------------------------
@@ -194,6 +120,15 @@ class BatchProcess(models.Model):
                                 null=False,
                                 blank=False)
     
+    json_data_id = \
+        models.ForeignKey('json_data.JsonData',
+                          on_delete=models.PROTECT,
+                          verbose_name='JsonDataID',
+                          db_column='json_data_id',
+                          default=0,
+                          null=False,
+                          blank=False)
+    
     created_timestamp = \
         models.DateTimeField(verbose_name='Created',
                              db_column='created_timestamp',
@@ -210,49 +145,6 @@ class BatchProcess(models.Model):
     
     class Meta:
         db_table = 'batch_process'
-
-    def __str__(self):
-        return self.name
-
-
-#-----------------------------------------------------------------------------
-# BatchProcessJsonData
-#-----------------------------------------------------------------------------
-class BatchProcessJsonData(models.Model):
-
-    id = \
-        models.BigAutoField(verbose_name='ID',
-                            db_column='id',
-                            primary_key=True)
-    
-    batch_process_id = \
-        models.ForeignKey(BatchProcess,
-                          on_delete=models.CASCADE,
-                          verbose_name='BatchProcessID',
-                          db_column='batch_process_id',
-                          default=0,
-                          null=False,
-                          blank=False)
-    
-    json_data_id = \
-        models.ForeignKey('json_data.JsonData',
-                          on_delete=models.CASCADE,
-                          verbose_name='JsonDataID',
-                          db_column='json_data_id',
-                          default=0,
-                          null=False,
-                          blank=False)
-    
-    created_timestamp = \
-        models.DateTimeField(verbose_name='Created',
-                             db_column='created_timestamp',
-                             default=timezone.now,
-                             null=False,
-                             blank=False)
-    
-    class Meta:
-        db_table = 'batch_process_json_data'
-        unique_together = ('batch_process_id', 'json_data_id')
 
     def __str__(self):
         return self.name

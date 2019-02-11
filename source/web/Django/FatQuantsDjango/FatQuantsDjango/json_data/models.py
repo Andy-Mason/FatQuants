@@ -37,6 +37,15 @@ class JsonData(models.Model):
                          null=False,
                          blank=True)
     
+    ### TODO: DO WE REALLY NEED THIS?
+    description = \
+        models.CharField(verbose_name='Description',
+                         db_column='description',
+                         max_length=250,
+                         default='',
+                         null=False,
+                         blank=True)
+    
     resource = \
         models.URLField(verbose_name='Resource',
                         db_column='resource',

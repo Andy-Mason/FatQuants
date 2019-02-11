@@ -7,17 +7,6 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
         self.execute_sql("""
         
             -- ---------------------------------------------------------------
-            -- Trigger: batch_type => system_audit_record
-            -- ---------------------------------------------------------------
-            /*
-            DROP TRIGGER IF EXISTS after_modification_trigger ON batch_type;
-            CREATE TRIGGER after_modification_trigger
-                AFTER INSERT OR UPDATE OR DELETE ON batch_type
-                FOR EACH ROW
-                EXECUTE PROCEDURE system_audit_record_insert();
-            */
-
-            -- ---------------------------------------------------------------
             -- Trigger: batch_process_type => system_audit_record
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS after_modification_trigger ON batch_process_type;
@@ -25,17 +14,6 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
                 AFTER INSERT OR UPDATE OR DELETE ON batch_process_type
                 FOR EACH ROW
                 EXECUTE PROCEDURE system_audit_record_insert();
-
-            -- ---------------------------------------------------------------
-            -- Trigger: batch_type_batch_process_type => system_audit_record
-            -- ---------------------------------------------------------------
-            /*
-            DROP TRIGGER IF EXISTS after_modification_trigger ON batch_type_batch_process_type;
-            CREATE TRIGGER after_modification_trigger
-                AFTER INSERT OR UPDATE OR DELETE ON batch_type_batch_process_type
-                FOR EACH ROW
-                EXECUTE PROCEDURE system_audit_record_insert();
-            */
 
 
             -- ===============================================================
@@ -82,29 +60,6 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
                 AFTER UPDATE ON batch_process
                 FOR EACH ROW
                 EXECUTE PROCEDURE batch_process_updated_timestamp();
-
-
-            -- ===============================================================
-            -- Trigger function for batch_process_json_data.created_timestamp
-            -- ===============================================================
-            CREATE OR REPLACE FUNCTION batch_process_json_data_created_timestamp()
-                RETURNS trigger AS
-            $BODY$
-            BEGIN
-                NEW.created_timestamp := current_timestamp;
-                RETURN NULL;
-            END;
-            $BODY$
-            LANGUAGE plpgsql;
-
-            -- ---------------------------------------------------------------
-            -- Trigger: batch_process_json_data.created_timestamp
-            -- ---------------------------------------------------------------
-            DROP TRIGGER IF EXISTS created_timestamp_trigger ON batch_process_json_data;
-            CREATE TRIGGER created_timestamp_trigger
-                AFTER INSERT ON batch_process_json_data
-                FOR EACH ROW
-                EXECUTE PROCEDURE batch_process_json_data_created_timestamp();
 
 
             -- ===============================================================
@@ -203,5 +158,3 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
     def recreate_data(self):
         #self.execute_sql("""<NONE>""")
         pass
-
-
