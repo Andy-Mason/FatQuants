@@ -331,13 +331,6 @@ class BatchProcessTaskIntervention(models.Model):
                           null=False,
                           blank=False)
     
-    intervention_timestamp = \
-        models.DateTimeField(verbose_name='TimeStamp',
-                             db_column='intervention_timestamp',
-                             default=timezone.now,
-                             null=False,
-                             blank=False)
-    
     #-------------------------------------------------------------------------
     # INTERVENTION TYPES
     #-------------------------------------------------------------------------
@@ -356,6 +349,13 @@ class BatchProcessTaskIntervention(models.Model):
                                 default=INTERVENTION_NONE,
                                 null=False,
                                 blank=False)
+    
+    intervention_timestamp = \
+        models.DateTimeField(verbose_name='TimeStamp',
+                             db_column='intervention_timestamp',
+                             default=timezone.now,
+                             null=False,
+                             blank=False)
     
     class Meta:
         db_table = 'batch_process_task_intervention'
