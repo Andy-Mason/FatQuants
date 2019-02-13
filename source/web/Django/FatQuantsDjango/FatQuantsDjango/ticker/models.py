@@ -276,6 +276,49 @@ class Ticker(models.Model):
 
 
 #-----------------------------------------------------------------------------
+# TickerBatchProcessType
+#-----------------------------------------------------------------------------
+class TickerBatchProcessType(models.Model):
+
+    id = \
+        models.BigAutoField(verbose_name='ID',
+                            db_column='id',
+                            primary_key=True)
+    
+    ticker_id = \
+        models.ForeignKey(Ticker,
+                          on_delete=models.PROTECT,
+                          verbose_name='TickerID',
+                          db_column='ticker_id',
+                          default=0,
+                          null=False,
+                          blank=False)
+    
+    batch_process_type_id = \
+        models.ForeignKey('batch_process.BatchProcessType',
+                          on_delete=models.PROTECT,
+                          verbose_name='BatchProcessTypeID',
+                          db_column='batch_process_type_id',
+                          default=0,
+                          null=False,
+                          blank=False)
+    
+    last_checked = \
+        models.DateTimeField(verbose_name='Last Checked',
+                             db_column='last_checked',
+                             default=timezone.now,
+                             null=False,
+                             blank=False)
+    
+    class Meta:
+        db_table = 'ticker_batch_process_type'
+        unique_together = ('ticker_id', 'batch_process_type_id')
+
+    def __str__(self): 
+        return self.name
+
+
+#-----------------------------------------------------------------------------
 # TickerIdentifier
 #-----------------------------------------------------------------------------
 class TickerIdentifier(models.Model):
@@ -406,49 +449,6 @@ class TickerResource(models.Model):
     class Meta:
         db_table = 'ticker_resource'
         unique_together = ('ticker_id', 'resource_type')
-
-    def __str__(self): 
-        return self.name
-
-
-#-----------------------------------------------------------------------------
-# TickerUpdateProcess
-#-----------------------------------------------------------------------------
-class TickerUpdateProcess(models.Model):
-
-    id = \
-        models.BigAutoField(verbose_name='ID',
-                            db_column='id',
-                            primary_key=True)
-
-    ticker_id = \
-        models.ForeignKey(Ticker,
-                          on_delete=models.PROTECT,
-                          verbose_name='TickerID',
-                          db_column='ticker_id',
-                          default=0,
-                          null=False,
-                          blank=False)
-    
-    batch_process_type_id = \
-        models.ForeignKey('batch_process.BatchProcessType',
-                          on_delete=models.PROTECT,
-                          verbose_name='BatchProcessTypeID',
-                          db_column='batch_process_type_id',
-                          default=0,
-                          null=False,
-                          blank=False)
-    
-    last_checked = \
-        models.DateTimeField(verbose_name='Last Checked',
-                             db_column='last_checked',
-                             default=timezone.now,
-                             null=False,
-                             blank=False)
-    
-    class Meta:
-        db_table = 'ticker_update_process'
-        unique_together = ('ticker_id', 'batch_process_type_id')
 
     def __str__(self): 
         return self.name

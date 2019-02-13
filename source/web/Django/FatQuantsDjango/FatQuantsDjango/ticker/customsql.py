@@ -68,7 +68,7 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS created_timestamp_trigger ON ticker_eod_data;
             CREATE TRIGGER created_timestamp_trigger
-                AFTER INSERT ON ticker_eod_data
+                BEFORE INSERT ON ticker_eod_data
                 FOR EACH ROW
                 EXECUTE PROCEDURE ticker_eod_data_created_timestamp();
 
@@ -82,6 +82,7 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
                 RETURNS trigger AS
             $BODY$
             BEGIN
+                NEW.created_timestamp := OLD.created_timestamp;
                 NEW.updated_timestamp := current_timestamp;
                 RETURN NULL;
             END;
@@ -95,7 +96,7 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS updated_timestamp_trigger ON ticker_eod_data;
             CREATE TRIGGER updated_timestamp_trigger
-                AFTER UPDATE ON ticker_eod_data
+                BEFORE UPDATE ON ticker_eod_data
                 FOR EACH ROW
                 EXECUTE PROCEDURE ticker_eod_data_updated_timestamp();
 

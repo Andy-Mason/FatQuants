@@ -34,7 +34,7 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS created_timestamp_trigger ON batch_process;
             CREATE TRIGGER created_timestamp_trigger
-                AFTER INSERT ON batch_process
+                BEFORE INSERT ON batch_process
                 FOR EACH ROW
                 EXECUTE PROCEDURE batch_process_created_timestamp();
 
@@ -46,6 +46,7 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
                 RETURNS trigger AS
             $BODY$
             BEGIN
+                NEW.created_timestamp := OLD.created_timestamp;
                 NEW.updated_timestamp := current_timestamp;
                 RETURN NULL;
             END;
@@ -57,7 +58,7 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS updated_timestamp_trigger ON batch_process;
             CREATE TRIGGER updated_timestamp_trigger
-                AFTER UPDATE ON batch_process
+                BEFORE UPDATE ON batch_process
                 FOR EACH ROW
                 EXECUTE PROCEDURE batch_process_updated_timestamp();
 
@@ -80,7 +81,7 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS log_timestamp_trigger ON batch_process_log;
             CREATE TRIGGER log_timestamp_trigger
-                AFTER INSERT ON batch_process_log
+                BEFORE INSERT ON batch_process_log
                 FOR EACH ROW
                 EXECUTE PROCEDURE batch_process_log_timestamp();
 
@@ -103,7 +104,7 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS created_timestamp_trigger ON batch_process_task;
             CREATE TRIGGER created_timestamp_trigger
-                AFTER INSERT ON batch_process_task
+                BEFORE INSERT ON batch_process_task
                 FOR EACH ROW
                 EXECUTE PROCEDURE batch_process_task_created_timestamp();
 
@@ -115,6 +116,7 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
                 RETURNS trigger AS
             $BODY$
             BEGIN
+                NEW.created_timestamp := OLD.created_timestamp;
                 NEW.updated_timestamp := current_timestamp;
                 RETURN NULL;
             END;
@@ -126,7 +128,7 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS updated_timestamp_trigger ON batch_process_task;
             CREATE TRIGGER updated_timestamp_trigger
-                AFTER UPDATE ON batch_process_task
+                BEFORE UPDATE ON batch_process_task
                 FOR EACH ROW
                 EXECUTE PROCEDURE batch_process_task_updated_timestamp();
 
@@ -149,7 +151,7 @@ class BatchProcessCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS intervention_timestamp_trigger ON batch_process_task_intervention;
             CREATE TRIGGER intervention_timestamp_trigger
-                AFTER INSERT OR UPDATE ON batch_process_task_intervention
+                BEFORE INSERT OR UPDATE ON batch_process_task_intervention
                 FOR EACH ROW
                 EXECUTE PROCEDURE batch_process_task_intervention_timestamp();
 

@@ -24,7 +24,7 @@ class JsonDataCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS created_timestamp_trigger ON json_data;
             CREATE TRIGGER created_timestamp_trigger
-                AFTER INSERT ON json_data
+                BEFORE INSERT ON json_data
                 FOR EACH ROW
                 EXECUTE PROCEDURE json_data_created_timestamp();
 
@@ -36,6 +36,7 @@ class JsonDataCustomSql(customsql_registry.AbstractCustomSql):
                 RETURNS trigger AS
             $BODY$
             BEGIN
+                NEW.created_timestamp := OLD.created_timestamp;
                 NEW.updated_timestamp := current_timestamp;
                 RETURN NULL;
             END;
@@ -47,7 +48,7 @@ class JsonDataCustomSql(customsql_registry.AbstractCustomSql):
             -- ---------------------------------------------------------------
             DROP TRIGGER IF EXISTS updated_timestamp_trigger ON json_data;
             CREATE TRIGGER updated_timestamp_trigger
-                AFTER UPDATE ON json_data
+                BEFORE UPDATE ON json_data
                 FOR EACH ROW
                 EXECUTE PROCEDURE json_data_updated_timestamp();
 
