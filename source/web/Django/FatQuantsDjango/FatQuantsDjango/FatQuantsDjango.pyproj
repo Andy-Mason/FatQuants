@@ -163,7 +163,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Interpreter Include="..\..\..\..\.python37_virtualenv\">
+    <Interpreter Include="..\..\..\..\..\..\..\Environments\.python37_virtualenv\">
       <Id>.python37_virtualenv</Id>
       <Version>0.0</Version>
       <Description>.python37_virtualenv (Python 3.7 (64-bit))</Description>

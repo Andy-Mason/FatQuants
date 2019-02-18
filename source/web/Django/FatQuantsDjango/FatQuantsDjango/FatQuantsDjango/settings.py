@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 3rd party libraries
-    #'ievv_opensource.ievv_customsql'
+    'ievv_opensource.ievv_customsql'
 ]
 
 
