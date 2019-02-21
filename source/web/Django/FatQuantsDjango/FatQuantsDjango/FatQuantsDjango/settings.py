@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # Default app created by framework
-    #'app',
+    'app',
 
     # Add your apps here to enable them
     'batch_process',

@@ -276,9 +276,9 @@ class Ticker(models.Model):
 
 
 #-----------------------------------------------------------------------------
-# TickerBatchProcessType
+# TickerBatchProcess
 #-----------------------------------------------------------------------------
-class TickerBatchProcessType(models.Model):
+class TickerBatchProcess(models.Model):
 
     id = \
         models.BigAutoField(verbose_name='ID',
@@ -303,6 +303,15 @@ class TickerBatchProcessType(models.Model):
                           null=False,
                           blank=False)
     
+    batch_process_id = \
+        models.ForeignKey('batch_process.BatchProcess',
+                          on_delete=models.PROTECT,
+                          verbose_name='BatchProcessID',
+                          db_column='batch_process_id',
+                          default=0,
+                          null=False,
+                          blank=False)
+    
     last_checked = \
         models.DateTimeField(verbose_name='Last Checked',
                              db_column='last_checked',
@@ -311,7 +320,7 @@ class TickerBatchProcessType(models.Model):
                              blank=False)
     
     class Meta:
-        db_table = 'ticker_batch_process_type'
+        db_table = 'ticker_batch_process'
         unique_together = ('ticker_id', 'batch_process_type_id')
 
     def __str__(self): 

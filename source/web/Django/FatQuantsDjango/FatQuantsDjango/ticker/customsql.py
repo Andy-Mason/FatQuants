@@ -47,6 +47,29 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
 
 
             -- ===============================================================
+            -- Trigger function for ticker_batch_process.last_checked
+            -- ===============================================================
+            CREATE OR REPLACE FUNCTION ticker_batch_process_last_checked()
+                RETURNS trigger AS
+            $BODY$
+            BEGIN
+                NEW.last_checked := current_timestamp;
+                RETURN NULL;
+            END;
+            $BODY$
+            LANGUAGE plpgsql;
+
+            -- ---------------------------------------------------------------
+            -- Trigger: ticker_batch_process.last_checked
+            -- ---------------------------------------------------------------
+            DROP TRIGGER IF EXISTS last_checked_trigger ON ticker_batch_process;
+            CREATE TRIGGER last_checked_trigger
+                BEFORE INSERT OR UPDATE ON ticker_batch_process
+                FOR EACH ROW
+                EXECUTE PROCEDURE ticker_batch_process_last_checked();
+
+
+            -- ===============================================================
             -- Trigger function for ticker_eod_data.created_timestamp
             --
             -- NOTE: This will be used in early versions of the system.
