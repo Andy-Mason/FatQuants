@@ -5,6 +5,30 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
     def initialize(self):
 
         self.execute_sql("""
+
+            -- ===============================================================
+            -- Trigger function for ticker.ticker_uuid generator
+            -- ===============================================================
+            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+            CREATE OR REPLACE FUNCTION ticker_uuid_generator()
+                RETURNS trigger AS
+            $BODY$
+            BEGIN
+                NEW.ticker_uuid := uuid_generate_v4();
+                RETURN NULL;
+            END;
+            $BODY$
+            LANGUAGE plpgsql;
+
+            -- ---------------------------------------------------------------
+            -- Trigger: ticker table before_insert_trigger
+            -- ---------------------------------------------------------------
+            DROP TRIGGER IF EXISTS before_insert_trigger ON ticker;
+            CREATE TRIGGER before_insert_trigger
+                BEFORE INSERT ON ticker
+                FOR EACH ROW
+                EXECUTE PROCEDURE ticker_uuid_generator();
+
         
             -- ---------------------------------------------------------------
             -- Trigger: ticker table
