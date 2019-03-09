@@ -15,7 +15,7 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
             $BODY$
             BEGIN
                 NEW.ticker_uuid := uuid_generate_v4();
-                RETURN NULL;
+                RETURN NEW;
             END;
             $BODY$
             LANGUAGE plpgsql;
