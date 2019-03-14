@@ -167,40 +167,23 @@ class MarketSector(models.Model):
         models.BigAutoField(verbose_name='MarketSectorID',
                             db_column='market_sector_id',
                             primary_key=True)
-
-    #-------------------------------------------------------------------------
-    # SECTOR_CLASSIFICATION TYPES
-    #-------------------------------------------------------------------------
-    SECTOR_CLASSIFICATION_NONE        = 0
-    SECTOR_CLASSIFICATION_GICS        = 1
-    SECTOR_CLASSIFICATION_ICB         = 2
-    SECTOR_CLASSIFICATION_AIC         = 3
-    SECTOR_CLASSIFICATION_IA          = 4
-    SECTOR_CLASSIFICATION_MORNINGSTAR = 5
-    SECTOR_CLASSIFICATION__TYPES = ( 
-        (SECTOR_CLASSIFICATION_NONE,        '<None>'),
-        (SECTOR_CLASSIFICATION_GICS,        'GICS'),
-        (SECTOR_CLASSIFICATION_ICB,         'ICB'),
-        (SECTOR_CLASSIFICATION_AIC,         'AIC'),
-        (SECTOR_CLASSIFICATION_IA,          'IA'),
-        (SECTOR_CLASSIFICATION_MORNINGSTAR, 'Morningstar')
-    )    
-    classification_type = \
-        models.SmallIntegerField(verbose_name='ClassificationType',
-                                 db_column='classification_type',
-                                 choices=SECTOR_CLASSIFICATION__TYPES,
-                                 default=SECTOR_CLASSIFICATION_NONE,
-                                 null=False,
-                                 blank=False)
-
-    sector_category_id = \
+    
+    parent_sector_id = \
         models.ForeignKey('self',
                           to_field='market_sector_id',
                           on_delete=models.PROTECT,
-                          verbose_name='SectorCategoryID',
-                          db_column='sector_category_id',
+                          verbose_name='ParentSectorID',
+                          db_column='parent_sector_id',
+                          default=0,
                           null=False,
                           blank=False)
+    
+    classification_code = \
+        models.CharField(verbose_name='Classification Code',
+                         db_column='classification_code',
+                         max_length=20, 
+                         null=True,
+                         blank=True)    
     
     description = \
         models.CharField(verbose_name='Description',
@@ -209,10 +192,11 @@ class MarketSector(models.Model):
                          default='',
                          null=False,
                          blank=False)    
-
+    
     class Meta:
         db_table = 'refdata_market_sector'
-        unique_together = ('classification_type', 'sector_category_id', 'description')
+        unique_together = ('parent_sector_id', 'classification_code')
+        unique_together = ('parent_sector_id', 'description')
 
     def __str__(self): 
         return self.name
