@@ -103,6 +103,7 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
             $BODY$
             BEGIN
                 NEW.created_timestamp := current_timestamp;
+                NEW.updated_timestamp := NULL;
                 RETURN NULL;
             END;
             $BODY$
@@ -128,9 +129,99 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
             CREATE OR REPLACE FUNCTION ticker_eod_data_updated_timestamp()
                 RETURNS trigger AS
             $BODY$
+
+            -- ---------------------------------------------------------------
+            -- Declarations
+            -- ---------------------------------------------------------------
+            DECLARE
+                data_changed bool := false;
+
             BEGIN
+                -- -----------------------------------------------------------
+                -- Check whether the data has actually changed
+                -- -----------------------------------------------------------
+                IF (OLD.ticker_id <> NEW.ticker_id) THEN
+                    data_changed := true;
+                END IF;
+
+                IF (OLD.close_date <> NEW.close_date) THEN
+                    data_changed := true;
+                END IF;
+
+                IF (OLD.data_source <> NEW.data_source) THEN
+                    data_changed := true;
+                END IF;
+
+                IF (OLD.open_value IS NULL) AND (NEW.open_value IS NOT NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.open_value IS NOT NULL) AND (NEW.open_value IS NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.open_value IS NOT NULL) AND (NEW.open_value IS NOT NULL) AND (OLD.open_value <> NEW.open_value) THEN
+                    data_changed := true;
+                END IF;
+
+                IF (OLD.high_value IS NULL) AND (NEW.high_value IS NOT NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.high_value IS NOT NULL) AND (NEW.high_value IS NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.high_value IS NOT NULL) AND (NEW.high_value IS NOT NULL) AND (OLD.high_value <> NEW.high_value) THEN
+                    data_changed := true;
+                END IF;
+
+                IF (OLD.low_value IS NULL) AND (NEW.low_value IS NOT NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.low_value IS NOT NULL) AND (NEW.low_value IS NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.low_value IS NOT NULL) AND (NEW.low_value IS NOT NULL) AND (OLD.low_value <> NEW.low_value) THEN
+                    data_changed := true;
+                END IF;
+
+                IF (OLD.close_value IS NULL) AND (NEW.close_value IS NOT NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.close_value IS NOT NULL) AND (NEW.close_value IS NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.close_value IS NOT NULL) AND (NEW.close_value IS NOT NULL) AND (OLD.close_value <> NEW.close_value) THEN
+                    data_changed := true;
+                END IF;
+
+                IF (OLD.volume IS NULL) AND (NEW.volume IS NOT NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.volume IS NOT NULL) AND (NEW.volume IS NULL) THEN
+                    data_changed := true;
+                END IF;
+                IF (OLD.volume IS NOT NULL) AND (NEW.volume IS NOT NULL) AND (OLD.volume <> NEW.volume) THEN
+                    data_changed := true;
+                END IF;
+
+
+                -- -----------------------------------------------------------
+                -- Do not allow the created_timestamp to be changed
+                -- -----------------------------------------------------------
                 NEW.created_timestamp := OLD.created_timestamp;
-                NEW.updated_timestamp := current_timestamp;
+
+
+                -- -----------------------------------------------------------
+                -- Only change the updated_timestamp if the data has changed
+                -- -----------------------------------------------------------
+                IF data_changed THEN
+                    NEW.updated_timestamp := current_timestamp;
+                ELSE
+                    NEW.updated_timestamp := OLD.updated_timestamp;
+                END IF;
+
+
+                -- -----------------------------------------------------------
+                -- Return
+                -- -----------------------------------------------------------
                 RETURN NULL;
             END;
             $BODY$
