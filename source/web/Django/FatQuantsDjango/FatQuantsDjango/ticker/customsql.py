@@ -78,7 +78,7 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
             $BODY$
             BEGIN
                 NEW.last_checked := current_timestamp;
-                RETURN NULL;
+                RETURN NEW;
             END;
             $BODY$
             LANGUAGE plpgsql;
@@ -104,7 +104,7 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
             BEGIN
                 NEW.created_timestamp := current_timestamp;
                 NEW.updated_timestamp := NULL;
-                RETURN NULL;
+                RETURN NEW;
             END;
             $BODY$
             LANGUAGE plpgsql;
@@ -222,7 +222,7 @@ class TickerCustomSql(customsql_registry.AbstractCustomSql):
                 -- -----------------------------------------------------------
                 -- Return
                 -- -----------------------------------------------------------
-                RETURN NULL;
+                RETURN NEW;
             END;
             $BODY$
             LANGUAGE plpgsql;

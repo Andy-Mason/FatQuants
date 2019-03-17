@@ -535,7 +535,7 @@ class TickerEodData(models.Model):
                           db_column='volume',
                           null=True,
                           blank=True)
-
+    
     # NOTE: This will be used in early versions of the system until TickerEodDataAuditRecord is implemented
     created_timestamp = \
         models.DateTimeField(verbose_name='Created',
@@ -551,7 +551,7 @@ class TickerEodData(models.Model):
                              default=timezone.now,
                              null=True,
                              blank=True)
-
+    
     class Meta:
         db_table = 'ticker_eod_data'
         unique_together = ('ticker_id', 'close_date')
