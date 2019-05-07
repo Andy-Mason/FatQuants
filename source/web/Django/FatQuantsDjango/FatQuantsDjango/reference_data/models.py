@@ -203,32 +203,6 @@ class MarketSector(models.Model):
 
 
 #-----------------------------------------------------------------------------
-# ProductProvider
-#-----------------------------------------------------------------------------
-class ProductProvider(models.Model):
-
-    product_provider_id = \
-        models.BigAutoField(verbose_name='ProductProviderID',
-                            db_column='product_provider_id',
-                            primary_key=True)
-    
-    description = \
-        models.CharField(verbose_name='Description',
-                         db_column='description',
-                         max_length=100,
-                         unique=True,
-                         default='',
-                         null=False,
-                         blank=False)
-    
-    class Meta:
-        db_table = 'refdata_product_provider'
-
-    def __str__(self): 
-        return self.name
-
-
-#-----------------------------------------------------------------------------
 # TestData
 #-----------------------------------------------------------------------------
 class TestData(models.Model):

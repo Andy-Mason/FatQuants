@@ -114,14 +114,6 @@ class Ticker(models.Model):
                          null=False,
                          blank=True)
     
-    product_provider_id = \
-        models.ForeignKey('reference_data.ProductProvider',
-                          on_delete=models.PROTECT,
-                          verbose_name='Product Provider',
-                          db_column='product_provider_id',
-                          null=True,
-                          blank=True)
-    
     product_leverage = \
         models.FloatField(verbose_name='Product Leverage',
                           db_column='product_leverage',
