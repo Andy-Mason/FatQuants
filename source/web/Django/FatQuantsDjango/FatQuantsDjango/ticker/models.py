@@ -68,48 +68,85 @@ class Ticker(models.Model):
                          blank=True)
 
     #-------------------------------------------------------------------------
-    # INSTRUMENT_MODEL TYPES
+    # INSTRUMENT TYPES
     #-------------------------------------------------------------------------
-    INSTRUMENT_MODEL_NONE      = 0
-    INSTRUMENT_MODEL_COMMODITY = 1
-    INSTRUMENT_MODEL_FX        = 2
-    INSTRUMENT_MODEL_INDEX     = 3
-    INSTRUMENT_MODEL_BOND      = 4
-    INSTRUMENT_MODEL_SHARE     = 5
-    INSTRUMENT_MODEL_INVTRUST  = 6
-    INSTRUMENT_MODEL_ETP       = 7
-    INSTRUMENT_MODEL_FUND      = 8
-    INSTRUMENT_MODEL__TYPES = ( 
-        (INSTRUMENT_MODEL_NONE,      '<None>'), 
-        (INSTRUMENT_MODEL_COMMODITY, 'Commodity'), 
-        (INSTRUMENT_MODEL_FX,        'FX'),
-        (INSTRUMENT_MODEL_INDEX,     'Index'),
-        (INSTRUMENT_MODEL_BOND,      'Bond'),
-        (INSTRUMENT_MODEL_SHARE,     'Share'),
-        (INSTRUMENT_MODEL_INVTRUST,  'InvestmentTrust'),
-        (INSTRUMENT_MODEL_ETP,       'ETP'),
-        (INSTRUMENT_MODEL_FUND,      'Fund')
+    INSTRUMENT_TYPE_COMMODITY = 'COMMODITY'
+    INSTRUMENT_TYPE_FX        = 'FX'
+    INSTRUMENT_TYPE_INDEX     = 'INDEX'
+    INSTRUMENT_TYPE_BOND      = 'BOND'
+    INSTRUMENT_TYPE_EQUITY    = 'EQUITY'
+    INSTRUMENT_TYPE_INVTRUST  = 'IT'
+    INSTRUMENT_TYPE_ETP       = 'ETP'
+    INSTRUMENT_TYPE_FUND      = 'FUND'
+    INSTRUMENT__TYPES = (
+        (INSTRUMENT_TYPE_COMMODITY, 'Commodity'),
+        (INSTRUMENT_TYPE_FX,        'Foreign Exchange'),
+        (INSTRUMENT_TYPE_INDEX,     'Index'),
+        (INSTRUMENT_TYPE_BOND,      'Bond'),
+        (INSTRUMENT_TYPE_EQUITY,    'Company Share'),
+        (INSTRUMENT_TYPE_INVTRUST,  'Investment Trust'),
+        (INSTRUMENT_TYPE_ETP,       'Exchange-Traded Product'),
+        (INSTRUMENT_TYPE_FUND,      'Fund')
     )    
-    instrument_model = \
-        models.SmallIntegerField(verbose_name='Instrument Model',
-                                 db_column='instrument_model',
-                                 choices=INSTRUMENT_MODEL__TYPES,
-                                 default=INSTRUMENT_MODEL_NONE,
-                                 null=False,
-                                 blank=False)
-
     instrument_type = \
         models.CharField(verbose_name='Instrument Type',
                          db_column='instrument_type',
                          max_length=30,
+                         choices=INSTRUMENT__TYPES,
                          default='',
                          null=False,
                          blank=True)
     
+    #-------------------------------------------------------------------------
+    # INSTRUMENT SUBTYPES
+    #-------------------------------------------------------------------------
+    INSTRUMENT_SUBTYPE_BASKET        = 'BASKET'
+    INSTRUMENT_SUBTYPE_COMPOSITE     = 'COMPOSITE'
+    INSTRUMENT_SUBTYPE_CORPORATE     = 'CORPORATE'
+    INSTRUMENT_SUBTYPE_ETC           = 'ETC'
+    INSTRUMENT_SUBTYPE_ETF           = 'ETF'
+    INSTRUMENT_SUBTYPE_ETN           = 'ETN'
+    INSTRUMENT_SUBTYPE_FORWARD       = 'FORWARD'
+    INSTRUMENT_SUBTYPE_GDR           = 'GDR'
+    INSTRUMENT_SUBTYPE_GOVERNMENT    = 'GOVERNMENT'
+    INSTRUMENT_SUBTYPE_MARKET        = 'MARKET'
+    INSTRUMENT_SUBTYPE_OEIC          = 'OEIC'
+    INSTRUMENT_SUBTYPE_ORDINARY      = 'ORDINARY'
+    INSTRUMENT_SUBTYPE_PREFERENCE    = 'PREFERENCE'
+    INSTRUMENT_SUBTYPE_REGIONAL      = 'REGIONAL'
+    INSTRUMENT_SUBTYPE_SECTOR        = 'SECTOR'
+    INSTRUMENT_SUBTYPE_SICAV         = 'SICAV'
+    INSTRUMENT_SUBTYPE_SPOT          = 'SPOT'
+    INSTRUMENT_SUBTYPE_SUPRANATIONAL = 'SUPRANATIONAL'
+    INSTRUMENT_SUBTYPE_UT            = 'UT'
+    INSTRUMENT_SUBTYPE_WARRANT       = 'WARRANT'
+    INSTRUMENT__SUBTYPES = (
+        (INSTRUMENT_SUBTYPE_BASKET,        'Basket'),
+        (INSTRUMENT_SUBTYPE_COMPOSITE,     'Composite'),
+        (INSTRUMENT_SUBTYPE_CORPORATE,     'Corporate Bond'),
+        (INSTRUMENT_SUBTYPE_ETC,           'Exchange-Traded Commodity'),
+        (INSTRUMENT_SUBTYPE_ETF,           'Exchange-Traded Fund'),
+        (INSTRUMENT_SUBTYPE_ETN,           'Exchange-Traded Note'),
+        (INSTRUMENT_SUBTYPE_FORWARD,       'Forward'),
+        (INSTRUMENT_SUBTYPE_GDR,           'Global Depositary Receipt'),
+        (INSTRUMENT_SUBTYPE_GOVERNMENT,    'Government Bond'),
+        (INSTRUMENT_SUBTYPE_MARKET,        'Market Index'),
+        (INSTRUMENT_SUBTYPE_OEIC,          'Open-Ended Investment Company'),
+        (INSTRUMENT_SUBTYPE_ORDINARY,      'Ordinary Share'),
+        (INSTRUMENT_SUBTYPE_PREFERENCE,    'Preference Share'),
+        (INSTRUMENT_SUBTYPE_REGIONAL,      'Regional Index'),
+        (INSTRUMENT_SUBTYPE_SECTOR,        'Sector Index'),
+        (INSTRUMENT_SUBTYPE_SICAV,         'SICAV'),
+        (INSTRUMENT_SUBTYPE_SPOT,          'Spot'),
+        (INSTRUMENT_SUBTYPE_SUPRANATIONAL, 'Supranational Bond'),
+        (INSTRUMENT_SUBTYPE_UT,            'Unit Trust'),
+        (INSTRUMENT_SUBTYPE_WARRANT,       'Warrant'),
+    )
     instrument_subtype = \
         models.CharField(verbose_name='Instrument Subtype',
                          db_column='instrument_subtype',
                          max_length=30,
+                         choices=INSTRUMENT__SUBTYPES,
                          default='',
                          null=False,
                          blank=True)
@@ -121,13 +158,13 @@ class Ticker(models.Model):
                           blank=True)
     
     #-------------------------------------------------------------------------
-    # FUND_UNIT_TYPES
+    # FUND_UNIT TYPES
     #-------------------------------------------------------------------------
     FUND_UNIT_ACCUMULATION = 'Acc'
-    FUND_UNIT_INCOME = 'Inc'
+    FUND_UNIT_INCOME       = 'Inc'
     FUND_UNIT__TYPES = ( 
         (FUND_UNIT_ACCUMULATION, 'Accumulation'), 
-        (FUND_UNIT_INCOME, 'Income') 
+        (FUND_UNIT_INCOME,       'Income') 
     )
     unit_type = \
         models.CharField(verbose_name='Unit Type',
