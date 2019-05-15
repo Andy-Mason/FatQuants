@@ -51,35 +51,13 @@ class Ticker(models.Model):
                          null=False,
                          blank=False)
     
-    #-------------------------------------------------------------------------
-    # INSTRUMENT TYPES
-    #-------------------------------------------------------------------------
-    INSTRUMENT_TYPE_COMMODITY = 'COMMODITY'
-    INSTRUMENT_TYPE_DEBT      = 'DEBT'
-    INSTRUMENT_TYPE_EQUITY    = 'EQUITY'
-    INSTRUMENT_TYPE_ETP       = 'ETP'
-    INSTRUMENT_TYPE_FUND      = 'FUND'
-    INSTRUMENT_TYPE_FX        = 'FX'
-    INSTRUMENT_TYPE_INDEX     = 'INDEX'
-    INSTRUMENT_TYPE_INVTRUST  = 'IT'
-    INSTRUMENT__TYPES = (
-        (INSTRUMENT_TYPE_COMMODITY, 'Commodity'),
-        (INSTRUMENT_TYPE_DEBT,      'Debt'),
-        (INSTRUMENT_TYPE_EQUITY,    'Company Share'),
-        (INSTRUMENT_TYPE_ETP,       'Exchange-Traded Product'),
-        (INSTRUMENT_TYPE_FUND,      'Fund'),
-        (INSTRUMENT_TYPE_FX,        'Foreign Exchange'),
-        (INSTRUMENT_TYPE_INDEX,     'Index'),
-        (INSTRUMENT_TYPE_INVTRUST,  'Investment Trust'),
-    )    
-    instrument_type = \
-        models.CharField(verbose_name='Instrument Type',
-                         db_column='instrument_type',
-                         max_length=30,
-                         choices=INSTRUMENT__TYPES,
-                         default='',
-                         null=False,
-                         blank=True)
+    instrument_type_id = \
+        models.ForeignKey('reference_data.InstrumentType',
+                          on_delete=models.PROTECT,
+                          verbose_name='Instrument Type',
+                          db_column='instrument_type_id',
+                          null=True,
+                          blank=True)
     
     issuer_name = \
         models.CharField(verbose_name='Issuer Name',

@@ -99,6 +99,7 @@ class IdentifierType(models.Model):
                          db_column='identifier_type',
                          max_length=20,
                          unique=True,
+                         default='',
                          null=False,
                          blank=False)
     
@@ -113,6 +114,41 @@ class IdentifierType(models.Model):
     
     class Meta:
         db_table = 'refdata_identifier_type'
+
+    def __str__(self):
+        return self.name
+
+
+#-----------------------------------------------------------------------------
+# InstrumentType
+#-----------------------------------------------------------------------------
+class InstrumentType(models.Model):
+
+    instrument_type_id = \
+        models.BigAutoField(verbose_name='InstrumentTypeID',
+                            db_column='instrument_type_id',
+                            primary_key=True)
+    
+    instrument_type = \
+        models.CharField(verbose_name='InstrumentType',
+                         db_column='instrument_type',
+                         max_length=20,
+                         unique=True,
+                         default='',
+                         null=False,
+                         blank=False)
+    
+    description = \
+        models.CharField(verbose_name='Description',
+                         db_column='description',
+                         max_length=100, 
+                         unique=True,
+                         default='',
+                         null=False,
+                         blank=False)
+    
+    class Meta:
+        db_table = 'refdata_instrument_type'
 
     def __str__(self):
         return self.name
