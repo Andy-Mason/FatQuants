@@ -58,23 +58,7 @@ class Ticker(models.Model):
                           db_column='instrument_type_id',
                           null=True,
                           blank=True)
-    
-    issuer_name = \
-        models.CharField(verbose_name='Issuer Name',
-                         db_column='issuer_name',
-                         max_length=100,
-                         default='',
-                         null=False,
-                         blank=True)
 
-    issuer_type = \
-        models.CharField(verbose_name='Issuer Type',
-                         db_column='issuer_type',
-                         max_length=30,
-                         default='',
-                         null=False,
-                         blank=True)
-    
     security_name = \
         models.CharField(verbose_name='Security Name',
                          db_column='security_name',
@@ -86,6 +70,36 @@ class Ticker(models.Model):
     security_type = \
         models.CharField(verbose_name='Security Type',
                          db_column='security_type',
+                         max_length=30,
+                         default='',
+                         null=False,
+                         blank=True)    
+    
+    registered_country_id = \
+        models.ForeignKey('reference_data.Country',
+                          on_delete=models.PROTECT,
+                          verbose_name='Registered Country',
+                          db_column='registered_country_id',
+                          null=True,
+                          blank=True)
+    
+    issue_size = \
+        models.FloatField(verbose_name='Issue Size',
+                          db_column='issue_size',
+                          null=True,
+                          blank=True)
+    
+    issuer_name = \
+        models.CharField(verbose_name='Issuer Name',
+                         db_column='issuer_name',
+                         max_length=100,
+                         default='',
+                         null=False,
+                         blank=True)
+    
+    issuer_type = \
+        models.CharField(verbose_name='Issuer Type',
+                         db_column='issuer_type',
                          max_length=30,
                          default='',
                          null=False,
@@ -114,20 +128,6 @@ class Ticker(models.Model):
                          default='',
                          null=False,
                          blank=True)
-    
-    registered_country_id = \
-        models.ForeignKey('reference_data.Country',
-                          on_delete=models.PROTECT,
-                          verbose_name='Registered Country',
-                          db_column='registered_country_id',
-                          null=True,
-                          blank=True)
-    
-    issue_size = \
-        models.FloatField(verbose_name='Issue Size',
-                          db_column='issue_size',
-                          null=True,
-                          blank=True)
     
     quote_units = \
         models.FloatField(verbose_name='Quote Units',
