@@ -26,6 +26,7 @@ class Country(models.Model):
                          db_column='description',
                          max_length=100, 
                          unique=True,
+                         default='',
                          null=False,
                          blank=False)
 
@@ -54,11 +55,19 @@ class Currency(models.Model):
                          null=False,
                          blank=False)
 
+    crypto_currency = \
+        models.BooleanField(verbose_name='CryptoCurrency',
+                            db_column='crypto_currency',
+                            default=False,
+                            null=False,
+                            blank=False)
+
     description = \
         models.CharField(verbose_name='Description',
                          db_column='description',
                          max_length=100,
                          unique=True,
+                         default='',
                          null=False,
                          blank=False)
     
