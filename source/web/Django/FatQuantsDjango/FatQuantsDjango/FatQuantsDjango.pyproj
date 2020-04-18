@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>FatQuantsDjango</Name>
     <RootNamespace>FatQuantsDjango</RootNamespace>
-    <InterpreterId>MSBuild|.python37_virtualenv|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|.python38_virtualenv|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -163,10 +163,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Interpreter Include="..\..\..\..\..\..\..\Environments\.python37_virtualenv\">
-      <Id>.python37_virtualenv</Id>
+    <Interpreter Include="..\..\..\..\..\..\..\Environments\.python38_virtualenv\">
+      <Id>.python38_virtualenv</Id>
       <Version>0.0</Version>
-      <Description>.python37_virtualenv (Python 3.7 (64-bit))</Description>
+      <Description>.python38_virtualenv (Python 3.8 (64-bit))</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>
       <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
