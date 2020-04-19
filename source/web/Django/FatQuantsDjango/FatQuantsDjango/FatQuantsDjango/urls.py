@@ -3,33 +3,28 @@ Definition of urls for FatQuantsDjango.
 """
 
 from datetime import datetime
-from django.conf.urls import url
-from django.contrib.auth import views as auth_views
-#from django.contrib.auth.views import LoginView
-
-import app.forms
-import app.views
-
-# Uncomment the next lines to enable the admin:
-from django.conf.urls import include
+from django.urls import path
 from django.contrib import admin
-admin.autodiscover()
+from django.contrib.auth.views import LoginView, LogoutView
+from app import forms, views
+
 
 urlpatterns = [
-
-    # Examples:
-    url(r'^$', app.views.home, name='home'),
-    url(r'^contact$', app.views.contact, name='contact'),
-    url(r'^about', app.views.about, name='about'),
-    url(r'^login/$', auth_views.LoginView.as_view(template_name='useraccounts/login.html'), name="login"),
-    #url(r'^login/$', LoginView.as_view(), name="login"),
-    url(r'^logout/$', auth_views.LogoutView.as_view(template_name='useraccounts/logout.html'), name='logout'),
-    #url(r'^logout/$', LogoutView.as_view(template_name='useraccounts/logout.html'), name='logout'),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    #url(r'^admin/doc/', django.contrib.admindocs.urls),
-
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('contact/', views.contact, name='contact'),
+    path('about/', views.about, name='about'),
+    path('login/',
+         LoginView.as_view
+         (
+             template_name='app/login.html',
+             authentication_form=forms.BootstrapAuthenticationForm,
+             extra_context=
+             {
+                 'title': 'Log in',
+                 'year' : datetime.now().year,
+             }
+         ),
+         name='login'),
+    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
+    path('admin/', admin.site.urls),
 ]

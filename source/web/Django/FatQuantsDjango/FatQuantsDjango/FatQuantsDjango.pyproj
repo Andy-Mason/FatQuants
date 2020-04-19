@@ -5,6 +5,7 @@
     <Name>FatQuantsDjango</Name>
     <RootNamespace>FatQuantsDjango</RootNamespace>
     <InterpreterId>MSBuild|.python38_virtualenv|$(MSBuildProjectFullPath)</InterpreterId>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
