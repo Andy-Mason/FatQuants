@@ -6,6 +6,7 @@
     <RootNamespace>FatQuantsDjango</RootNamespace>
     <InterpreterId>MSBuild|.python38_virtualenv|$(MSBuildProjectFullPath)</InterpreterId>
     <TestFramework>Pytest</TestFramework>
+    <SuppressPackageInstallationPrompt>True</SuppressPackageInstallationPrompt>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -108,6 +109,8 @@
     <Folder Include="batch_process\migrations\" />
     <Folder Include="batch_process\templates\" />
     <Folder Include="FatQuantsDjango\" />
+    <Folder Include="FatQuantsDjango\templates\" />
+    <Folder Include="FatQuantsDjango\static\" />
     <Folder Include="json_data\" />
     <Folder Include="json_data\migrations\" />
     <Folder Include="json_data\templates\" />
