@@ -109,6 +109,7 @@
     <Folder Include="batch_process\migrations\" />
     <Folder Include="batch_process\templates\" />
     <Folder Include="FatQuantsDjango\" />
+    <Folder Include="FatQuantsDjango\static\css\" />
     <Folder Include="FatQuantsDjango\templates\" />
     <Folder Include="FatQuantsDjango\static\" />
     <Folder Include="json_data\" />
@@ -126,6 +127,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="batch_process\templates\index.html" />
+    <Content Include="FatQuantsDjango\static\css\fatquants.css" />
+    <Content Include="FatQuantsDjango\templates\base.html" />
     <Content Include="json_data\templates\index.html" />
     <Content Include="reference_data\templates\index.html" />
     <Content Include="db.sqlite3" />
