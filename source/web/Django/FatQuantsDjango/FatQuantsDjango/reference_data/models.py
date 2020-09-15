@@ -1,6 +1,6 @@
 from django.db import models
+from django.db.models import JSONField
 from django.utils import timezone
-from django.contrib.postgres.fields import JSONField
 
 
 #-----------------------------------------------------------------------------
@@ -274,10 +274,10 @@ class TestData(models.Model):
                          blank=True)
     
     test_boolean = \
-        models.NullBooleanField(verbose_name='Boolean',
-                                db_column='test_boolean',
-                                null=True,
-                                blank=True)
+        models.BooleanField(verbose_name='Boolean',
+                            db_column='test_boolean',
+                            null=True,
+                            blank=True)
     
     test_smallint = \
         models.SmallIntegerField(verbose_name='Small Integer',

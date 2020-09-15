@@ -1,6 +1,6 @@
 from django.db import models
+from django.db.models import JSONField
 from django.utils import timezone
-from django.contrib.postgres.fields import JSONField
 
 
 #-----------------------------------------------------------------------------
@@ -108,7 +108,7 @@ class SystemAuditRecord(models.Model):
                                  blank=False)
     
     field_value_boolean = \
-        models.NullBooleanField(verbose_name='Boolean',
+        models.BooleanField(verbose_name='Boolean',
                                 db_column='field_value_boolean',
                                 null=True,
                                 blank=True)
