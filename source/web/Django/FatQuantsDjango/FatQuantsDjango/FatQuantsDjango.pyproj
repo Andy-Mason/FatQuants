@@ -20,7 +20,7 @@
     <WorkingDirectory>.</WorkingDirectory>
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
     <LaunchProvider>Django launcher</LaunchProvider>
-    <DjangoSettingsModule>FatQuantsDjango.settings</DjangoSettingsModule>
+    <DjangoSettingsModule>_configuration.settings</DjangoSettingsModule>
     <OutputPath>.</OutputPath>
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
   </PropertyGroup>
@@ -60,10 +60,10 @@
     <Compile Include="json_data\views.py" />
     <Compile Include="json_data\__init__.py" />
     <Compile Include="manage.py" />
-    <Compile Include="FatQuantsDjango\__init__.py" />
-    <Compile Include="FatQuantsDjango\settings.py" />
-    <Compile Include="FatQuantsDjango\urls.py" />
-    <Compile Include="FatQuantsDjango\wsgi.py" />
+    <Compile Include="_configuration\__init__.py" />
+    <Compile Include="_configuration\settings.py" />
+    <Compile Include="_configuration\urls.py" />
+    <Compile Include="_configuration\wsgi.py" />
     <Compile Include="reference_data\admin.py" />
     <Compile Include="reference_data\apps.py" />
     <Compile Include="reference_data\customsql.py">
@@ -108,13 +108,16 @@
     <Folder Include="batch_process\" />
     <Folder Include="batch_process\migrations\" />
     <Folder Include="batch_process\templates\" />
-    <Folder Include="FatQuantsDjango\" />
-    <Folder Include="FatQuantsDjango\static\css\" />
-    <Folder Include="FatQuantsDjango\templates\" />
-    <Folder Include="FatQuantsDjango\static\" />
+    <Folder Include="_configuration\" />
+    <Folder Include="_resources\static\css\" />
+    <Folder Include="_resources\static\fonts\" />
+    <Folder Include="_resources\static\scripts\" />
+    <Folder Include="_resources\templates\" />
+    <Folder Include="_resources\static\" />
     <Folder Include="json_data\" />
     <Folder Include="json_data\migrations\" />
     <Folder Include="json_data\templates\" />
+    <Folder Include="_resources\" />
     <Folder Include="reference_data\" />
     <Folder Include="reference_data\migrations\" />
     <Folder Include="reference_data\templates\" />
@@ -127,8 +130,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="batch_process\templates\index.html" />
-    <Content Include="FatQuantsDjango\static\css\fatquants.css" />
-    <Content Include="FatQuantsDjango\templates\base.html" />
+    <Content Include="_resources\static\css\fatquants.css" />
+    <Content Include="_resources\templates\base.html" />
     <Content Include="json_data\templates\index.html" />
     <Content Include="reference_data\templates\index.html" />
     <Content Include="db.sqlite3" />
