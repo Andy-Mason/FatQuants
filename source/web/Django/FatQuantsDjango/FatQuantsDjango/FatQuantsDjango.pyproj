@@ -20,7 +20,7 @@
     <WorkingDirectory>.</WorkingDirectory>
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
     <LaunchProvider>Django launcher</LaunchProvider>
-    <DjangoSettingsModule>_configuration.settings</DjangoSettingsModule>
+    <DjangoSettingsModule>_project.settings</DjangoSettingsModule>
     <OutputPath>.</OutputPath>
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
   </PropertyGroup>
@@ -60,10 +60,20 @@
     <Compile Include="json_data\views.py" />
     <Compile Include="json_data\__init__.py" />
     <Compile Include="manage.py" />
-    <Compile Include="_configuration\__init__.py" />
-    <Compile Include="_configuration\settings.py" />
-    <Compile Include="_configuration\urls.py" />
-    <Compile Include="_configuration\wsgi.py" />
+    <Compile Include="_project\configuration\test.py" />
+    <Compile Include="_project\configuration\staging.py" />
+    <Compile Include="_project\configuration\prod.py" />
+    <Compile Include="_project\configuration\dev.py" />
+    <Compile Include="_project\configuration\base.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_project\configuration\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_project\__init__.py" />
+    <Compile Include="_project\settings.py" />
+    <Compile Include="_project\urls.py" />
+    <Compile Include="_project\wsgi.py" />
     <Compile Include="reference_data\admin.py" />
     <Compile Include="reference_data\apps.py" />
     <Compile Include="reference_data\customsql.py">
@@ -108,16 +118,21 @@
     <Folder Include="batch_process\" />
     <Folder Include="batch_process\migrations\" />
     <Folder Include="batch_process\templates\" />
-    <Folder Include="_configuration\" />
-    <Folder Include="_resources\static\css\" />
-    <Folder Include="_resources\static\fonts\" />
-    <Folder Include="_resources\static\scripts\" />
-    <Folder Include="_resources\templates\" />
-    <Folder Include="_resources\static\" />
+    <Folder Include="_project\" />
+    <Folder Include="_project\configuration\" />
+    <Folder Include="_project\media\" />
+    <Folder Include="_project\tmp\" />
+    <Folder Include="_project\static\" />
+    <Folder Include="_project\site_static\" />
+    <Folder Include="_project\site_static\site\" />
+    <Folder Include="_project\site_static\site\css\" />
+    <Folder Include="_project\site_static\site\img\" />
+    <Folder Include="_project\site_static\site\js\" />
+    <Folder Include="_project\static\fonts\" />
+    <Folder Include="_project\templates\" />
     <Folder Include="json_data\" />
     <Folder Include="json_data\migrations\" />
     <Folder Include="json_data\templates\" />
-    <Folder Include="_resources\" />
     <Folder Include="reference_data\" />
     <Folder Include="reference_data\migrations\" />
     <Folder Include="reference_data\templates\" />
@@ -130,8 +145,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="batch_process\templates\index.html" />
-    <Content Include="_resources\static\css\fatquants.css" />
-    <Content Include="_resources\templates\base.html" />
+    <Content Include="_project\site_static\site\css\fatquants.css" />
+    <Content Include="_project\templates\base.html" />
     <Content Include="json_data\templates\index.html" />
     <Content Include="reference_data\templates\index.html" />
     <Content Include="db.sqlite3" />

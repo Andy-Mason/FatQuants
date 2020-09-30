@@ -68,7 +68,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = '_configuration.urls'
+ROOT_URLCONF = '_project.urls'
 
 # Template configuration
 # https://docs.djangoproject.com/en/2.1/topics/templates/
@@ -88,7 +88,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = '_configuration.wsgi.application'
+WSGI_APPLICATION = '_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
