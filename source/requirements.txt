@@ -11,7 +11,7 @@ html5lib==1.0.1
 htmls==1.0.0
 ievv-opensource==5.13.0
 Jinja2==2.10
-lxml==4.2.5
+lxml==4.6.2
 MarkupSafe==1.1.0
 pathtools==0.1.2
 psutil==5.4.8
