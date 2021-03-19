@@ -10,7 +10,7 @@ html2text==2018.1.9
 html5lib==1.0.1
 htmls==1.0.0
 ievv-opensource==5.13.0
-Jinja2==2.10
+Jinja2==2.11.3
 lxml==4.2.5
 MarkupSafe==1.1.0
 pathtools==0.1.2
