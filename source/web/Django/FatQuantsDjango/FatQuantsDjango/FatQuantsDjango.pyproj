@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>FatQuantsDjango</Name>
     <RootNamespace>FatQuantsDjango</RootNamespace>
-    <InterpreterId>Global|VisualStudio|.python39_virtualenv (Python 3.9 (64-bit))</InterpreterId>
+    <InterpreterId>MSBuild|FatQuants_python39_virtualenv|$(MSBuildProjectFullPath)</InterpreterId>
     <TestFramework>Pytest</TestFramework>
     <SuppressPackageInstallationPrompt>True</SuppressPackageInstallationPrompt>
   </PropertyGroup>
@@ -188,7 +188,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|VisualStudio|.python39_virtualenv (Python 3.9 (64-bit))" />
+    <Interpreter Include="..\..\..\..\..\environments\FatQuants_python39_virtualenv\">
+      <Id>FatQuants_python39_virtualenv</Id>
+      <Version>3.9</Version>
+      <Description>FatQuants_python39_virtualenv (Python 3.9 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
