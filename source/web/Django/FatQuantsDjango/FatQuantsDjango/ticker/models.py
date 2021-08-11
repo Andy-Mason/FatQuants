@@ -169,48 +169,10 @@ class Ticker(models.Model):
                          null=False,
                          blank=True)
     
-    listing_code = \
-        models.CharField(verbose_name='Listing Code',
-                         db_column='listing_code',
-                         max_length=20,
-                         default='',
-                         null=False,
-                         blank=True)
-    
-    
-    listing_category = \
-        models.CharField(verbose_name='Listing Category',
-                         db_column='listing_category',
-                         max_length=60,
-                         default='',
-                         null=False,
-                         blank=True)
     listing_date = \
         models.DateField(verbose_name='Listing Date',
                          db_column='listing_date',
                          null=True,
-                         blank=True)
-    
-    exchange_market_size = \
-        models.FloatField(verbose_name='Exchange Market Size',
-                          db_column='exchange_market_size',
-                          null=True,
-                          blank=True)
-
-    trading_service = \
-        models.CharField(verbose_name='Trading Service',
-                         db_column='trading_service',
-                         max_length=60,
-                         default='',
-                         null=False,
-                         blank=True)
-    
-    trading_segment = \
-        models.CharField(verbose_name='Trading Segment',
-                         db_column='trading_segment',
-                         max_length=20,
-                         default='',
-                         null=False,
                          blank=True)
     
     market_sector_id = \
